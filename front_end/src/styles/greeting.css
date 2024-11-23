@@ -1,0 +1,19 @@
+.greeting-message {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4CAF50;
+    text-align: center;
+    margin: 20px;
+    display: block;
+    animation: fadeIn 2s ease-in;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  

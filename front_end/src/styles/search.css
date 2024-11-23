@@ -1,0 +1,21 @@
+.no_results{
+    font-size: 1.5em;
+    color: white;
+    background-color: green;
+    text-align: center;
+    margin-top: 20vh;
+    padding: 20px;
+    border-radius: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.details-list {
+    list-style-type: disc; /* or 'circle', 'square', or 'none' */
+    margin-left: 20px; /* Indent the bullets */
+  }
+  
+  .details-list .detail {
+    text-align: left;
+  }
+  
