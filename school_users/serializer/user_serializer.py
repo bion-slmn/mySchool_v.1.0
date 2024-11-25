@@ -8,11 +8,12 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
+        print(user, 22222222222)
         token = super().get_token(user)
         
         token['name'] = user.first_name
-        if hasattr(user, 'schools'):
-            token['school'] = user.schools.name
+        #if hasattr(user, 'schools'):
+        #    token['school'] = user.schools.name
 
         return token
 
@@ -58,6 +59,7 @@ class UserSerializer(serializers.ModelSerializer):
         
         user = User(**validated_data)
         user.set_password(password)
+        user.is_active = True
         
         user.save()
         return user

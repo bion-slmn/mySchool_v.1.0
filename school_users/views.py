@@ -12,6 +12,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
+    print('here')
     serializer_class = MyTokenObtainPairSerializer
 
 
@@ -52,12 +53,14 @@ class UserView(APIView):
             either a success message with a 201 status or 
             validation errors with a 400 status.
         """
+        data = request.data.copy()
+        data['role'] = 'teacher'
 
-        serializer =  UserSerializer(data=request.data)
-        if serializer.is_valid():
+        serializer =  UserSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
             user = serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
+        return Response(serializer.data, status=201)
+        
     
     def put(self, request: HttpRequest, user_id: str) -> Response:
         """
