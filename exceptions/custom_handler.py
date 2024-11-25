@@ -4,12 +4,13 @@ def custom_exception_handler(exc, context):
     response = exception_handler(exc, context)
     
     hanlders = {
-        'ValidationError': _handle_generic_error,
+        'ValidationError': handle_validation_error,
         'PermissionDenied': _handle_generic_error,
         'NotAuthenticated': _handle_generic_error,
         'AuthenticationFailed': _handle_generic_error,
         'NotFound': _handle_generic_error,
         'MethodNotAllowed': _handle_generic_error,
+        "AttributeError": _handle_generic_error,
      }
     
     exception_class = exc.__class__.__name__
@@ -22,6 +23,13 @@ def _handle_generic_error(exc, context, response):
 
     response.data = {
         'errors': response.data,
+        'status': response.status_code
+    }
+    return response
+
+def handle_validation_error(exc, context, response):
+    response.data = {
+        'errors': {'details': response.data},
         'status': response.status_code
     }
     return response

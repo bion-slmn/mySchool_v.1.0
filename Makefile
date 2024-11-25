@@ -9,12 +9,40 @@ start-project:
 	$(POETRY_RUN) django-admin startproject $(project) .
 	@echo
 
+# Start a new app
 start-app:
-	@echo "--- Starting app: $(app) ---" 
-	$(POETRY_RUN_DJANGO) startapp $(app)
+	@if [ -z "$(app)" ]; then \
+		read -p "Enter app name: " app; \
+	fi; \
+	echo "--- Starting app: $${app}_app ---"; \
+	$(POETRY_RUN_DJANGO) startapp $${app}_app;
 	@echo
 
+
+package:
+	@echo '--- making package $(pack) ---'
+	mkdir $(pack)
+	touch $(pack)/__init__.py
+	@echo
+
+	
+env:
+	@echo '--- creating .env and .gitignore files ---'
+	@touch .env .gitignore
+	@grep -qxF 'db.sqlite3' .gitignore || echo 'db.sqlite3' >> .gitignore
+	@grep -qxF '__pycache__/' .gitignore || echo '__pycache__/' >> .gitignore
+	@grep -qxF 'migrations/' .gitignore || echo 'migrations/' >> .gitignore
+	@grep -qxF '.env' .gitignore || echo '.env' >> .gitignore
+	@grep -qxF 'logs/' .gitignore || echo 'logs/' >> .gitignore
+	@grep -qxF 'Makefile' .gitignore || echo 'Makefile' >> .gitignore
+	@echo '--- .env and .gitignore files created ---'
+
+
+# Combined target to start app and make directories
+
+
 migrate:
+
 	@echo "--- Migrating database ---"
 	$(POETRY_RUN_DJANGO) migrate
 	@echo

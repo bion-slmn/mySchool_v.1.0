@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from ..models.user_models import User, SchoolRoles
 from django.contrib.auth.password_validation import (
     validate_password, password_validators_help_texts)
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -22,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
     date_joined = serializers.DateTimeField(read_only=True, format="%Y-%m-%d")
     last_login = serializers.DateTimeField(read_only=True, format="%Y-%m-%d %H:%M:%S")
     password = serializers.CharField(write_only=True, required=False)
-    role = serializers.ChoiceField(choices=User.SchoolRoles.choices)
+    role = serializers.ChoiceField(choices=SchoolRoles.choices)
 
     class Meta:
         model = User
@@ -45,7 +45,7 @@ class UserSerializer(serializers.ModelSerializer):
         """
         Validate the role field to ensure it is one of the allowed choices.
         """
-        if value not in dict(User.SchoolRoles.choices):
+        if value not in dict(SchoolRoles.choices):
             raise serializers.ValidationError("Invalid role. Choose either 'admin' or 'teacher'.")
         return value
 

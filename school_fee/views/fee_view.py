@@ -47,7 +47,6 @@ def group_by_key(source: List[Dict[str, Any]],
 
 class FeeView(APIView):
     permission_classes = [AllowAny]
-    @handle_exceptions
     def get(self, request: HttpRequest, fee_id) -> Response:
         """
         Retrieves a specific fee object and returns its serialized data.
@@ -66,7 +65,6 @@ class FeeView(APIView):
         serializer = FeeSerializer(fee)
         return Response(serializer.data)
 
-    @handle_exceptions
     def post(self, request: HttpRequest) -> Response:
         """
         Creates a new fee associated with a and assigns it to all students in that grade.
@@ -136,7 +134,6 @@ class FeeView(APIView):
 
 class FeePercentageCollected(APIView):
     permission_classes = [AllowAny]
-    @handle_exceptions
     def get(self, request: HttpRequest) -> Response:
         """
         Get the percentage of fees collected per grade, optimized for performance.
@@ -203,7 +200,6 @@ class FeePercentageCollected(APIView):
 
 class GradeFeeView(APIView):
     permission_classes = [AllowAny]
-    @handle_exceptions
     def get(self, request: HttpRequest, grade_id) -> Response:
         """
         Handles GET requests to retrieve fee information for a specific grade.
@@ -229,7 +225,6 @@ class GradeFeeView(APIView):
 
 class DailyFeeView(APIView):
     permission_classes = [AllowAny]
-    @handle_exceptions
     def get(self, request: HttpRequest, grade_id) -> Response:
         """
         Handles GET requests to retrieve daily fee information for a specific grade.
@@ -254,7 +249,6 @@ class DailyFeeView(APIView):
 
 class FeePerTerm(APIView):
     permission_classes = [AllowAny]
-    @handle_exceptions
     def get(self, request: HttpRequest, term_id) -> Response:
         term  = get_object_or_404(Term.objects.prefetch_related('fees'), id=term_id)
         fees = term.fees.all().values('id', 'name', 'total_amount','fee_type', 'is_active')

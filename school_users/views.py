@@ -1,12 +1,12 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
-from .serializers import UserSerializer
+from .serializer.user_serializer import UserSerializer
 from .models import User
 from django.http import HttpRequest
 from rest_framework.response import Response
 from .permissions import IsAdmin
-from rest_framework.permissions import AllowAny
-from .serializers import MyTokenObtainPairSerializer
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from .serializer.user_serializer import MyTokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 
@@ -82,13 +82,21 @@ class UserView(APIView):
             return Response('You have to pass data', status=400)
         user = get_object_or_404(User, id=user_id)
         serializer = UserSerializer(user, data=request.data, partial=True)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response(serializer.data, status=200)
-        return Response(serializer.errors, status=400)
+        return Response(serializer.data, status=200)
+        
     
 class CreateAdminView(APIView):
-    permission_classes = [AllowAny]
+    def get_permissions(self):
+        """
+        Dynamically assign permissions based on the request method.
+        """
+        if self.request.method == 'GET':
+            return [IsAuthenticated()]
+        elif self.request.method == 'POST':
+            return [AllowAny()]
+        return super().get_permissions()
 
     def get(self, request: HttpRequest) -> Response:
         '''
@@ -104,13 +112,15 @@ class CreateAdminView(APIView):
         return Response(user_data, 200)
 
     def post(self, request: HttpRequest) -> Response:
-        serializer = UserSerializer(data=request.data)
 
-        if serializer.is_valid():
+        data = request.data.copy()
+        data['role'] = 'admin'
+
+        serializer = UserSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
             # Save the user instance
             user = serializer.save()
             user.save()  # Save after setting flags
 
-            return Response(serializer.data, status=201)
+        return Response(serializer.data, status=201)
 
-        return Response(serializer.errors, status=400)
