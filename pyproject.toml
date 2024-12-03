@@ -1,13 +1,14 @@
 [tool.poetry]
-name = "myschool_v.1.0"
+name = "myschool-v-1-0"
 version = "0.1.0"
 description = ""
 authors = ["bion-slmn <bionsol25@gmail.com>"]
 readme = "README.md"
-packages = [{include = "myschool_v_1_0"}]
+packages = [{include = "myschool_v"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+django = "4.2"
 django-redis = "5.4.0"
 djangorestframework = "3.14.0"
 psycopg2-binary = "2.9.9"
@@ -20,7 +21,6 @@ redis = "5.0.3"
 gunicorn = "22.0.0"
 dj-database-url = "2.2.0"
 django-cors-headers = "4.3.1"
-mypy = "^1.13.0"
 
 
 [build-system]
