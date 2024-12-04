@@ -1,14 +1,16 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import User
+from .models import User, PasswordReset
 from django.http import HttpRequest
 from .utils import (get_school_from_token, get_user_by_school, 
-                    add_role_to_user)
-from .serializer import UserSerializer, MyTokenObtainPairSerializer
+                    add_role_to_user, validate_and_save_data)
+from .serializer import UserSerializer, MyTokenObtainPairSerializer, ResetPasswordRequestSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.exceptions import NotAuthenticated
+from rest_framework.exceptions import NotAuthenticated, ValidationError
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from rest_framework.permissions import AllowAny
 
 
 
@@ -16,6 +18,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 # Class view for the user 
+
 class UserListView(APIView):
     # get all users/teachers in the school of the admin
     def get(self, request: HttpRequest) -> Response:
@@ -52,8 +55,7 @@ class UserView(APIView):
         '''
         if school:
             user = get_object_or_404(User, id=user_id, school=school)
-        elif user_id.strip('"') != str(request.user.id):  # Check if it's a request for the current user
-            print('User id:', user_id, 'Request user id:', request.user.id)
+        elif user_id.strip('"') != str(request.user.id):  
             raise NotAuthenticated('You are not authorized to view this user')
         else:
             user = request.user
@@ -86,4 +88,109 @@ class CreateAdminView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
 
+class Logout(APIView):
+    def post(self, request: HttpRequest) -> Response:
+        '''
+        Logout the user
+        '''
+        return Response(status=status.HTTP_200_OK)
+
+class PasswordResetView(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def post(self, request: HttpRequest) -> Response:
+        '''
+        Reset the user password
+        '''
+        email = request.data.get('email')
+        try:
+            user = self.get_user_from_email(email)
+            token = self.generate_password_reset_token(user)
+            data = validate_and_save_data(
+                ResetPasswordRequestSerializer, 
+                {'email': email, 'token': token})
+        except Exception as e:
+            print(e)
+        return Response(
+            {'message': 'Password reset link has been sent to your email', 'data': data},
+              status=status.HTTP_200_OK)
+    
+    def get_user_from_email(self, email: str) -> User:
+        '''
+        Get the user from the email
+        '''
+        if not email:
+            raise ValidationError('Email is required')
+        if user := User.objects.filter(email__iexact=email).first():
+            return user
+        else:
+            raise ValidationError('User with this email does not exist')
         
+    def generate_password_reset_token(self, user: User) -> str:
+        '''
+        Generate the password reset token
+        '''
+        return PasswordResetTokenGenerator().make_token(user)
+    
+    def put(self, request: HttpRequest) -> Response:
+        '''
+        Update the password
+        '''
+        token = request.data.get('token')
+        password = request.data.get('password')
+        confirmed_password = request.data.get('confirmed_password')
+
+        self.verify_passwordreset_token(token)
+        self.validate_passwords(password, confirmed_password)
+        user = self.get_user_from_token(token)
+        self.update_user_password(user, password)
+
+        return Response(
+            {'message': 'Password has been reset successfully'},
+            status=status.HTTP_200_OK
+        )
+
+
+
+    def verify_passwordreset_token(self, token: str) -> bool:
+        '''
+        Verify the token
+        '''
+        if not token:
+            raise ValidationError('Password reset token is required')
+        password_reset = PasswordReset.objects.filter(token=token).first()
+        if not password_reset:
+            raise ValidationError('Invalid  Password reset token')
+        if password_reset.is_expired():
+            raise ValidationError('Password reset token has expired')
+        return True
+    
+    def validate_passwords(self, password: str, confirmed_password: str) -> bool:
+        '''
+        Validate the password
+        '''
+        if not password or not confirmed_password:
+            raise ValidationError('Password and confirmed password are required')
+        if password != confirmed_password:
+            raise ValidationError('Passwords do not match')
+        return True
+    
+    def get_user_from_token(self, token: str) -> User:
+        '''
+        Get the user from the token
+        '''
+        password_reset = PasswordReset.objects.filter(token=token).first()
+        return User.objects.filter(email__iexact=password_reset.email).first()
+    
+    def update_user_password(self, user, password: str):
+        '''
+        Update the user password
+        '''
+        serializer = UserSerializer(user, data={'password': password}, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+    
+  
+

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, PasswordReset
 from django.contrib.auth.password_validation import (
     validate_password, password_validators_help_texts)
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -75,3 +75,10 @@ class UserSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+class ResetPasswordRequestSerializer(serializers.ModelSerializer):  
+    email = serializers.EmailField(required=True)
+
+    class Meta:
+        model = PasswordReset
+        fields = '__all__'

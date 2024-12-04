@@ -7,6 +7,7 @@ from .models import User
 from  ..school.models import School
 from django.core.exceptions import ValidationError
 
+
 def get_school_from_token(request: HttpRequest) -> str:
     """
     Get the school of the user from the token.
@@ -53,4 +54,15 @@ def add_role_to_user(request: HttpRequest, role: str) -> User:
     request_copy = request.data.copy()
     request_copy["role"] = role
 
-    return request_copy 
+    return request_copy
+
+
+def validate_and_save_data(serializer_class, data):
+        '''
+        Validates and saves data using the provided serializer class.
+        '''
+        serializer = serializer_class(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return serializer.data
+
