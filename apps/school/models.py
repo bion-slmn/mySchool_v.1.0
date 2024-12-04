@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from apps.user.models import User
 
 
 class BaseModel(models.Model):
@@ -22,4 +23,4 @@ class School(BaseModel):
     """
     name =  models.CharField(max_length=100, unique=True)
     address = models.TextField()
-    
+    school = models.OneToOneField(User, on_delete=models.CASCADE, related_name='school', null=True)
