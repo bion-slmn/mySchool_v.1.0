@@ -27,13 +27,20 @@ class UserListView(APIView):
         '''
         school = get_school_from_token(request)
         user = get_user_by_school(request, school)
+        user_data = self.get_serialized_user(user)
+        return Response(user_data, status=status.HTTP_200_OK)
+    
+    def get_serialized_user(self, user: User) -> dict:
+        '''
+        Serialize the user
+        '''
         if isinstance(user, list):
             serializer = UserSerializer(user, many=True)
         else:
             serializer = UserSerializer(user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return serializer.data
+        
     
-
 
 class UserView(APIView):
     # get a user/teacher in the school of the admin by id
@@ -41,13 +48,20 @@ class UserView(APIView):
         '''
         Get a user/teacher in the school of the admin by id
         '''
-        user_id = request.query_params.get('id')
-        if not user_id:
-            return ValueError('User id is required')
+        user_id = self.validate_user_id(request)
         school = get_school_from_token(request)
         user = self.get_user(user_id, request, school)
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def validate_user_id(self, request: HttpRequest) -> str:
+        '''
+        Validate the user id
+        '''
+        if user_id := request.query_params.get('id'):
+            return user_id
+        else:
+            raise ValidationError('User id is required')
     
     def get_user(self, user_id: str, request: HttpRequest,  school=None) -> User:
         '''
@@ -72,20 +86,27 @@ class CreateAdminView(APIView):
         get user admin information
         '''
         user = request.user
-        user_data = UserSerializer(user).data
-        if hasattr(user, 'schools'):
-            school = user.schools
-            user_data['school_name'] = school.name
-            user_data['school_id'] = school.id
+        user_data = self.add_school_to_user_info(user)
 
         return Response(user_data, 200)
 
+    def add_school_to_user_info(self, user: User) -> dict:
+        '''
+        Add the school information to the user information
+        '''
+        user_data = UserSerializer(user).data
+        if hasattr(user, 'school'):
+            school = user.school
+            user_data['school_name'] = school.name
+            user_data['school_id'] = school.id
+        return user_data
+
     def post(self, request: HttpRequest) -> Response:
+        ''' Create an admin user '''
         data = add_role_to_user(request, 'admin')
-        serializer = UserSerializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        data = validate_and_save_data(UserSerializer, data)
+        return Response(data, status=status.HTTP_201_CREATED)
+
     
 
 class Logout(APIView):
