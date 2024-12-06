@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import User, PasswordReset
 from django.contrib.auth.password_validation import (
     validate_password, password_validators_help_texts)
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from .models import User
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -68,17 +68,16 @@ class UserSerializer(serializers.ModelSerializer):
 
         passowrd is deleted if present
         """
+
         password = validated_data.pop('password', None)
+        print(password, 2222222222222333333333333333444444444444)
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
 
+        if password:
+            self.validate_password(password)
+            instance.set_password(password)
+
         instance.save()
         return instance
-
-class ResetPasswordRequestSerializer(serializers.ModelSerializer):  
-    email = serializers.EmailField(required=True)
-
-    class Meta:
-        model = PasswordReset
-        fields = '__all__'
