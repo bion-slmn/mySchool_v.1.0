@@ -66,3 +66,16 @@ def validate_and_save_data(serializer_class, data):
         serializer.save()
         return serializer.data
 
+
+def get_user_from_email(email: str) -> User:
+    """
+    Fetch the user by their email address.
+    """
+    if not email:
+        raise ValidationError("Email is required.")
+    if user := User.objects.filter(email__iexact=email).first():
+        return user
+    else:
+        raise ValidationError("User with this email does not exist.")
+
+
