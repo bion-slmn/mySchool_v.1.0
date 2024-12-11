@@ -23,4 +23,4 @@ class School(BaseModel):
     """
     name =  models.CharField(max_length=100, unique=True)
     address = models.TextField()
-    school = models.OneToOneField(User, on_delete=models.CASCADE, related_name='school', null=True)
+    owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='school', null=True)

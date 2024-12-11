@@ -22,6 +22,7 @@ from exceptions.views import custom_404_handler
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/user/', include('apps.user.urls')),
+    path('api/school/', include('apps.school.urls')),
 ]
 
 handler404 = custom_404_handler
