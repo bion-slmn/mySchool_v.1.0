@@ -18,9 +18,6 @@ class School(BaseModel):
     owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='school', null=True)
 
 
-
-
-
 class Term(BaseModel):
     """
     Term represents an academic term within the system.
@@ -35,14 +32,6 @@ class Term(BaseModel):
     end_date = models.DateField()
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='terms')
     is_current = models.BooleanField(default=True)
-
-    def update_is_current(self):
-        today = timezone.now().date()
-        self.is_current = self.end_date >= today >= self.start_date
-
-    def save(self, *args, **kwargs):
-        self.update_is_current()
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

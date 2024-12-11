@@ -1,19 +1,6 @@
 from rest_framework import serializers
 from .models import School, Term
-
-
-class BaseSerializer(serializers.ModelSerializer):
-    """
-    BaseSerializer is a base class for serializers that provides common fields for model serialization.
-
-    Attributes:
-        id (CharField): A read-only field representing identifier of the model.
-        created_at (DateTimeField): A read-only field representing the creation
-
-    """
-    id = serializers.CharField(read_only=True)
-    created_at = serializers.DateTimeField(format="%Y-%m-%d", read_only=True)
-    updated_at = serializers.DateTimeField(format="%Y-%m-%d", read_only=True)
+from config.base_serializer import BaseSerializer
 
 
 class SchoolSerializer(BaseSerializer):
@@ -25,7 +12,7 @@ class SchoolSerializer(BaseSerializer):
         fields = '__all__'
 
 
-class TermSerializer(serializers.ModelSerializer):
+class TermSerializer(BaseSerializer):
     '''
     TermSerializer is a class that serializes the Term model
     '''

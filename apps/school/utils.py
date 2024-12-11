@@ -81,8 +81,8 @@ class TermService:
         serializer = TermSerializer(data=school_data)
         school = user.school
         serializer.is_valid(raise_exception=True)
-        term = serializer.save(school=school)
-        return TermSerializer(term).data
+        serializer.save(school=school)
+        return serializer.data
     
     def get_term_object(self, term_id) -> Term:
         '''
