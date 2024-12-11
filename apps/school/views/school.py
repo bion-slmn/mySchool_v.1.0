@@ -1,8 +1,8 @@
-from .serializer import SchoolSerializer
+from ..serializer import SchoolSerializer
 from rest_framework.views import APIView
 from django.http import HttpRequest
 from rest_framework.response import Response
-from .utils import SchoolService
+from ..utils import SchoolService
 from rest_framework import status
 
 
