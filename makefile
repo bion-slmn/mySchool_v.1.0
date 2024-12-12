@@ -31,7 +31,7 @@ message ?= "Update code"
 
 push:
 	@echo "Adding files: $(files)..."
-	git add $(files)
+	git add .
 	@echo "Committing with message: '$(message)'..."
 	git commit -m "$(message)"
 	@echo "Pushing to GitHub..."

@@ -5,6 +5,7 @@ from typing import List
 from apps.user.models import User
 from .serializer import StudentSerializer
 from django.shortcuts import get_object_or_404
+from django.db import transaction
 
 
 class StudentService:
@@ -43,10 +44,21 @@ class StudentService:
         serializer.save()
         return serializer.data
 
-
     def delete_student(self, student_id: int) -> None:
         '''
         delete a student
         '''
         student = self.get_student(student_id)
         student.delete()
+
+
+class StudentFeeService:
+    @staticmethod
+    def add_fees_to_students(created_fees):
+        """
+        Add fees to all students in the associated grades.
+        """
+        with transaction.atomic():
+            for fee in created_fees:
+                fee.students.add(*fee.grade.students.all())
+
