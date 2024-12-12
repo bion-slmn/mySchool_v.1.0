@@ -22,10 +22,10 @@ class GradeService:
         '''
         if not self.school_service.check_user_has_school(user):
             raise ValidationError('User has no school')
-        grade_data['school'] = user.school.id
-        serializer = GradeSerializer(data=grade_data)
+        school = user.school
+        serializer = GradeSerializer(data=grade_data, partial=True)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        serializer.save(school=school)
         return serializer.data
     
     def get_grade_object(self, grade_id: str) ->Grade:
@@ -45,3 +45,10 @@ class GradeService:
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return serializer.data
+
+    def delete_class(self, grade_id) -> None:
+        '''
+        delete a grade
+        '''
+        grade = self.get_grade_object(grade_id)
+        grade.delete()

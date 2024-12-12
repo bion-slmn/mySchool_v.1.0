@@ -27,13 +27,20 @@ class GradeVIew(APIView):
         user = request.user
         grade_data = request.data
         grade = self.grade_service.create_grade(user, grade_data)
-        return Response(grade.data, status=status.HTTP_201_CREATED)
+        return Response(grade, status=status.HTTP_201_CREATED)
     
-    def put(self, request:HttpRequest) -> Response:
+    def put(self, request:HttpRequest, grade_id: str) -> Response:
         '''
         Update a grade in a school
         '''
         user = request.user
         grade_data = request.data
-        grade = self.grade_service.update_grade(user, grade_data)
-        return Response(grade.data, status=status.HTTP_200_OK)  
+        grade = self.grade_service.update_grade(user, grade_data, grade_id)
+        return Response(grade, status=status.HTTP_200_OK)
+
+    def delete(self, request: HttpRequest ,grade_id: str) ->Response:
+        '''
+        Remove a grade
+        '''
+        self.grade_service.delete_class(grade_id)
+        return Response('Delete Sucessfully', status=status.HTTP_200_OK)
