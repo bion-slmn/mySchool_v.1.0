@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     #custom apps
     'apps.school',
     'apps.user',
+    'apps.classes',
+    'apps.students',
 
     #third party apps
     'rest_framework',

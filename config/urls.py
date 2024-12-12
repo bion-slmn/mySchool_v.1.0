@@ -23,6 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/user/', include('apps.user.urls')),
     path('api/school/', include('apps.school.urls')),
+    path('api/class/', include('apps.classes.urls')),
+    path('api/student/', include('apps.students.urls')),
 ]
 
 handler404 = custom_404_handler
