@@ -40,7 +40,7 @@ class FeeView(APIView):
         Delete a fee object
         '''
         self.fee_service.delete_fee(fee_id)
-        return
+        return Response(status=status.HTTP_204_NO_CONTENT)
     
 
 

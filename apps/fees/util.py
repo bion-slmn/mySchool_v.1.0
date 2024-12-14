@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from .models import Fee
+from .models import Fee, FeeType
 from apps.classes.models import Grade
 from .serializer import FeeSerializer
 from apps.school.utils import SchoolService
@@ -128,7 +128,7 @@ class FeeService:
     
     def get_fees_by_term(self, term_id):
         term = self.validator.validate_term_id(term_id)
-        return term.fee.all()
+        return term.fees.all()
     
     def get_fees_by_grade(self, grade_id):
         grade = self.validator.validate_grade(grade_id)
@@ -139,8 +139,17 @@ class FeeService:
             raise ValidationError("User must have a school.")
         return self.fee_creator.create_fees(request)
 
+    @staticmethod
+    def bulk_create_with_names(fee_obj, fee_to_create):
+        for fee in fee_to_create:
+            fee.name = FeeModelService.generate_name(fee)
+        return fee_obj.objects.bulk_create(fee_to_create)
+    
     def update(self, fee_id, request):
         fee_data = request.data
+        if not fee_data:
+            raise ValidationError("Fee details must be provided.")
+
         fee_obj = self.get_fee_object(fee_id)
 
         serializer = FeeSerializer(fee_obj, data=fee_data, partial=True)

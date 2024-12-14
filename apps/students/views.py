@@ -27,6 +27,7 @@ class StudentView(APIView):
         '''
         user = request.user
         student_data = request.data
+        print(student_data, 3333333)
         student = self.student_service.create_student(student_data, user)
         student_info = StudentSerializer(student).data
         # add add mission fee if the studnt is created
