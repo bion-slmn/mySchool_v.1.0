@@ -74,6 +74,6 @@ class CreateDailyPaymentView(APIView):
         '''
         Create a new payment for a specific fee.
         '''
-        data = request.data
+        data = request.data.get('payments')
         payment_created = self.payment_service.bulk_create_payments(data)
         return Response(payment_created, status=status.HTTP_201_CREATED)

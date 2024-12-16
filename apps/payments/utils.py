@@ -68,7 +68,8 @@ class PaymentService:
             raise ValidationError('Student ID and Fee ID are required to get student payment on fee')
         
         payments = Payment.objects.filter(student_id=student_id, fee_id=fee_id)
-        return PaymentSerializer(payments, many=True)
+        serializer = PaymentSerializer(payments, many=True)
+        return serializer.data
     
     def bulk_create_payments(self, data) -> dict:
         '''
