@@ -37,10 +37,12 @@ add:
 
 commit:
 	@echo "--- Committing code to GitHub ---"
-	@read -p "Enter commit message: " message; \
-	git commit -m "$$message"; 
-	@echo "--- Commit completed with message: '$$message' ---"
-	@echo
+	@{ \
+	read -p "Enter commit message: " message; \
+	git commit -m "$$message"; \
+	echo "--- Commit completed with message: '$$message' ---"; \
+	}
+
 
 
 push: add commit
