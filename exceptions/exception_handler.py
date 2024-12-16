@@ -61,8 +61,7 @@ def _handle_validation_error(exc, context, response):
         {
             'status': 'error',
             'status_code': response.status_code,
-            'message': 'Validation failed',
-            'errors': formatted_errors,
+            'message': formatted_errors,
         },
         status=response.status_code
     )

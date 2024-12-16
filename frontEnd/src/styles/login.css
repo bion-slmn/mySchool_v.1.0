@@ -1,0 +1,22 @@
+.login-form {
+  width: 60%; /* Default width */
+  padding: 40px;
+  align-items: center;
+  margin: auto;
+  border-radius: 8px;
+  background: #f8f9fa; /* Light background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.login-form h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Adjust width for smaller screens */
+@media (max-width: 768px) {
+  .login-form {
+    width: 90%; /* Wider for small screens */
+    padding: 15px;
+  }
+}

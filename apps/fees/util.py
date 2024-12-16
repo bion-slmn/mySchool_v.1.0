@@ -48,25 +48,35 @@ class ValidateFeeData:
         self.school_service = school_service or SchoolService()
 
     def validate_term_id(self, term_id):
+        '''
+        Validate that a term exists. and return the term object.
+        '''
         return get_object_or_404(Term, id=term_id)
 
     def validate_grade_ids(self, grade_ids: list) -> list:
+        '''
+        Validate that the provided grade IDs are valid and return the grade objects.
+        '''
         if not grade_ids or not isinstance(grade_ids, list):
             raise ValidationError("Grade IDs must be provided as a list.")
         
-        print(grade_ids, 22222233333333333333)
         grades = Grade.objects.filter(id__in=grade_ids).prefetch_related('students')
         if len(grades) != len(grade_ids):
             raise ValidationError("Some grade IDs are invalid.")
         return grades
 
     def validate_fee_data(self, fee_data):
-        
+        '''
+        Validate the fee data and return the serializer object.
+        '''
         serializer = FeeSerializer(data=fee_data, partial=True)
         serializer.is_valid(raise_exception=True)
         return serializer
     
     def validate_grade(self, grade_id):
+        '''
+        Validate that a grade exists and return the grade object.
+        '''
         return get_object_or_404(Grade, id=grade_id)
 
 
@@ -76,22 +86,29 @@ class FeeCreationService:
         self.student_fee_service = student_fee_service or StudentFeeService()
 
     def extract_fee_data(self, request):
+        '''
+        Extract fee data from the request and return the fee data, term ID, and grade IDs.
+        '''
         fee_data = request.data.copy()
         
         if not fee_data:
             raise ValidationError("Fee details must be provided.")
-        
-        print(fee_data, 4444444444444)
         grade_ids = fee_data.pop('grade_ids', None)
         term_id = fee_data.pop('term', None)
         return fee_data, term_id, grade_ids
 
     def create_admission_fee(self, fee_data):
+        '''
+        Create an admission fee and return the fee data.
+        '''
         serializer = self.validator.validate_fee_data(fee_data)
         serializer.save()
         return serializer.data
 
     def create_non_admission_fees(self, fee_data, term_id, grade_ids):
+        '''
+        Create non-admission fees and return the fee data.
+        '''
         self.validator.validate_fee_data(fee_data)
         term = self.validator.validate_term_id(term_id)
         grades = self.validator.validate_grade_ids(grade_ids)
@@ -101,13 +118,18 @@ class FeeCreationService:
 
     @staticmethod
     def _bulk_create_fees(fee_data: dict, grades: List[Grade], term: Term):
+        '''
+        Bulk create fees for the provided grades and term.
+        '''
         fees_to_create = [Fee(**{**fee_data, "grade": grade, "term": term}) for grade in grades]
         return FeeService.bulk_create_with_names(Fee, fees_to_create)
 
     def create_fees(self, request):
+        '''
+        Create fees based on the request data and return the fee data.
+        '''
         fee_data, term_id, grade_ids = self.extract_fee_data(request)
-        
-        print(grade_ids, 22222222222)
+    
         if fee_data.get("fee_type") == "ADMISSION":
             return self.create_admission_fee(fee_data)
         return self.create_non_admission_fees(fee_data, term_id, grade_ids)
@@ -120,32 +142,53 @@ class FeeService:
         self.validator = validator or ValidateFeeData()
 
     def get_fee_object(self, fee_id):
+        '''
+        Retrieve a fee object by its ID.
+        '''
         return get_object_or_404(Fee, id=fee_id)
 
     def get_fee_data(self, fee_id):
+        '''
+        Retrieve a fee object by its ID and return the serialized data.
+        '''
         fee = self.get_fee_object(fee_id)
         return FeeSerializer(fee).data
     
     def get_fees_by_term(self, term_id):
+        '''
+        Retrieve all fees for a term.
+        '''
         term = self.validator.validate_term_id(term_id)
         return term.fees.all()
     
     def get_fees_by_grade(self, grade_id):
+        '''
+        Retrieve all fees for a grade.
+        '''
         grade = self.validator.validate_grade(grade_id)
         return grade.fees.all()
 
     def create_fees(self, request):
+        '''
+        Create fees based on the request data and return the fee data.
+        '''
         if not self.school_service.check_user_has_school(request.user):
             raise ValidationError("User must have a school.")
         return self.fee_creator.create_fees(request)
 
     @staticmethod
     def bulk_create_with_names(fee_obj, fee_to_create):
+        '''
+        Bulk create fees and generate names for the fees.
+        '''
         for fee in fee_to_create:
             fee.name = FeeModelService.generate_name(fee)
         return fee_obj.objects.bulk_create(fee_to_create)
     
     def update(self, fee_id, request):
+        '''
+        Update a fee object and return the updated data.
+        '''
         fee_data = request.data
         if not fee_data:
             raise ValidationError("Fee details must be provided.")
@@ -158,5 +201,8 @@ class FeeService:
         return serializer.data
 
     def delete_fee(self, fee_id):
+        '''
+        Delete a fee object
+        '''
         fee_obj = self.get_fee_object(fee_id)
         fee_obj.delete()
