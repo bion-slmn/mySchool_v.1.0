@@ -29,13 +29,25 @@ allmigrations: migrations migrate
 files ?= .
 message ?= "Update code"
 
-push:
-	@echo "Adding files: $(files)..."
+
+add:
+	@echo "--- Adding files to GitHub ---"
 	git add .
-	@echo "Committing with message: '$(message)'..."
-	git commit -m "$(message)"
-	@echo "Pushing to GitHub..."
+	@echo
+
+commit:
+	@echo "--- Committing code to GitHub ---"
+	@read -p "Enter commit message: " message; \
+	git commit -m "$$message"; 
+	@echo "--- Commit completed with message: '$$message' ---"
+	@echo
+
+
+push: add commit
+	@echo "--- Pushing to GitHub..."
 	git push
+	@echo "--- Push completed ---"
+	@echo
 
 
 CONTENT_TYPE := application/json
