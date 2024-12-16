@@ -42,6 +42,7 @@ commit:
 	git commit -m "$$message"; \
 	echo "--- Commit completed with message: '$$message' ---"; \
 	}
+	@echo
 
 
 
