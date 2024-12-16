@@ -1,5 +1,5 @@
 import { GiAbstract076 } from "react-icons/gi";
-
+import "../styles/loading.css";
 
 const RotatingIcon = () => {
   return (

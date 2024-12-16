@@ -64,7 +64,7 @@ function Login() {
         />
       </Form.Group>
 
-        <SubmitButton text="Login" isLoading={false} />
+        <SubmitButton text="Login" isLoading={isLoading} />
     </Form>
   );
 }

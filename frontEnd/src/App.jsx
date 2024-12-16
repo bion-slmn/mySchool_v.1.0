@@ -1,21 +1,24 @@
-import "./App.css";
-import { Routes, Route, BrowserRouter } from "react-router-dom"; // Use BrowserRouter here
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Use BrowserRouter
 import Login from "./components/login";
 import AuthProvider from "./service/authService";
 import Navigationbar from "./components/navbar";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function App() {
   return (
-    <BrowserRouter> {/* Wrap your whole app in BrowserRouter */}
-      <AuthProvider>
-        <div className="App">
+    <div className="App">
+      <Router>
+        <AuthProvider>
           <Navigationbar />
           <Routes>
             <Route path="login" element={<Login />} />
           </Routes>
-        </div>
-      </AuthProvider>
-    </BrowserRouter>
+        </AuthProvider>
+      </Router>
+      <ToastContainer />
+    </div>
   );
 }
 

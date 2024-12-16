@@ -2,6 +2,8 @@ import { jwtDecode } from "jwt-decode";
 import { useState, useContext, createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "./apiservice";
+import { toast } from "react-toastify";
+
 
 const AuthContext = createContext();
 
@@ -73,12 +75,13 @@ const AuthProvider = ({ children }) => {
       localStorage.setItem("sHule", res.access);
       localStorage.setItem("sHule_refresh", res.refresh);
       localStorage.setItem("sHule_user", JSON.stringify(decodedUser));
+      toast.success("Login successful! Redirecting to dashboard...");
 
       navigate("/dashboard");
     } else {
       localStorage.setItem("sHule", "");
-      console.error(res, 111111111111111);
-      throw new Error(res.detail);
+      toast.error(res.message);
+      throw new Error(res.message);
     }
   };
 
