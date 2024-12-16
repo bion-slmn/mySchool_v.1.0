@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'apps.classes',
     'apps.students',
     'apps.fees',
+    'apps.payments',
 
     #third party apps
     'rest_framework',
