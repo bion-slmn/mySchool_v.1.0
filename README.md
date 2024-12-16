@@ -1,7 +1,3 @@
-Here's the updated README with the **Payment app** included:
-
----
-
 # School Finance Management System
 
 ## Overview
@@ -21,14 +17,14 @@ school_finance_management/
 ├── manage.py                   # Django management script
 ├── config/                     # Project configuration and settings
 │   ├── __init__.py
-│   ├── settings.py             # Django project settings
+│   ├── settings                 # Django project settings
 │   ├── urls.py                 # Root URL configuration
 │   ├── wsgi.py                 # WSGI application for deployment
 │   └── asgi.py                 # ASGI application for deployment
 ├── apps/                       # Modular Django applications
-│   ├── schools/                # School management app
+│   ├── schools/                # School and term management app
 │   ├── students/               # Student management app
-│   ├── classes/                # Class and grade management app
+│   ├── classes/                # Class or grade management app
 │   ├── fees/                   # Fee management and transactions app
 │   ├── payment/                # Payment processing and transaction management app
 │   └── users/                  # User management and authentication app
