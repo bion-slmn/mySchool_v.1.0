@@ -38,3 +38,11 @@ class TermView(APIView):
         school_data = request.data
         updated_school = self.term_service.update_term(user, school_data, term_id)
         return Response(updated_school, status=status.HTTP_200_OK)
+    
+    def delete(self, request:HttpRequest, term_id: str) -> Response:
+        '''
+        Delete a term
+        '''
+        user = request.user
+        self.term_service.delete_term(term_id)
+        return Response('Deleted Successfully', status=status.HTTP_200_OK)

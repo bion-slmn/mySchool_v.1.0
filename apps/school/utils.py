@@ -100,4 +100,9 @@ class TermService:
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return serializer.data
+
+    def delete_term(self, term_id: str):
+        term = self.get_term_object(term_id)
+        term.delete()
+        return None
         

@@ -18,7 +18,7 @@ const AuthProvider = ({ children }) => {
 
   const refreshToken = async () => {
     const refreshToken = localStorage.getItem("sHule_refresh");
-
+    console.log("refreshToken", refreshToken, 1111111111111111111);
     if (!refreshToken) {
       logOut();
       return;
@@ -96,9 +96,12 @@ const AuthProvider = ({ children }) => {
 
   // Middleware to check token validity before accessing any authenticated routes
   const checkTokenAndRefresh = async () => {
+    const token = localStorage.getItem("sHule");
+    console.log("Checking token and refreshing................");
     if (token && isTokenExpired(token)) {
       await refreshToken();
     }
+    // navigate('/login')
   };
 
   return (

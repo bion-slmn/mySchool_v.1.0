@@ -11,4 +11,5 @@ urlpatterns = [
     path('term/create/', TermView.as_view(), name='create-term'),
     path('term/view/', TermView.as_view(), name='view-term'),
     path('term/update/<str:term_id>', TermView.as_view(), name='update-term'),
+    path('term/delete/<str:term_id>', TermView.as_view(), name='delete-term')
 ]

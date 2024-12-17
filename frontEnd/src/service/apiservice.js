@@ -1,1 +1,70 @@
 export const API_URL = "http://localhost:8000/api/";
+
+// function to get data from backend
+export const fetchData = async (endPoint) => {
+  let token = localStorage.getItem("sHule");
+
+  try {
+    const response = await fetch(`${API_URL}${endPoint}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const res = await response.json();
+
+    if (response.ok) {
+      return res;
+    }
+    if (response.status === 401) {
+      console.log("Token expired", 3333333333333333);
+      throw new Error("Token expired");
+    }
+
+    // Throw an error with a proper message
+    throw new Error(res.message || "Something went wrong");
+  } catch (error) {
+    console.error(error, "Error fetching data:", error.message);
+    throw error; // Re-throw the error so the caller can handle it
+  }
+};
+
+export const modifyData = async (endPoint, data, method = "POST") => {
+  // handle post, put, delete requests
+  const token = localStorage.getItem("sHule");
+
+  const response = await fetch(`${API_URL}${endPoint}`, {
+    method: method,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  const res = await response.json();
+  console.log("response", res, response.status, 2222222222222222222);
+
+  if (response.ok) {
+    return res;
+  }
+  if (response.status === 401) {
+    //await user.checkTokenAndRefresh;
+  }
+
+  throw new Error(res.message || "Something went wrong");
+};
+
+export const postData = async (endPoint, data) => {
+  return modifyData(endPoint, data, "POST");
+};
+
+export const deleteData = async (endPoint, data) => {
+  return modifyData(endPoint, data, "DELETE");
+};
+
+export const updateData = async (endPoint, data) => {
+  return modifyData(endPoint, data, "PUT");
+};
