@@ -53,6 +53,7 @@ const ViewTerms = () => {
                             <Card>
                                 <Card.Body>
                                     <Card.Title>{term.name}</Card.Title>
+                                    <br />
                                     <Card.Subtitle className="mb-2 text-muted">
                                         Start Date: {term.start_date}
                                     </Card.Subtitle>

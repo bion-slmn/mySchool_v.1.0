@@ -9,6 +9,9 @@ import UpdateSchool from "./components/school/updateSchool";
 import CreateTerm from "./components/school/createTerm";
 import ViewTerms from "./components/school/viewTerm";
 import UpdateTerm from "./components/school/updateTerm";
+import CreateGrade from "./components/grade/createGrade";
+import ViewGrades from "./components/grade/viewGrade";
+import UpdateGrades from "./components/grade/updateGrades";
 
 
 function App() {
@@ -19,12 +22,15 @@ function App() {
           <Navigationbar />
          
           <CreateTerm />
-          <ViewTerms />
+          <CreateGrade />
+          <ViewGrades />
           <Routes>
             <Route path="login" element={<Login />} />
             <Route path="updateSchool" element={<UpdateSchool/>} />
             <Route path="viewSchool" element={<ViewSchool />} />
             <Route path="updateTerm" element={<UpdateTerm />} />
+            <Route path="viewGrades" element={<ViewGrades />} />
+            <Route path="updateGrade" element={<UpdateGrades />} />
           </Routes>
         </AuthProvider>
       </Router>

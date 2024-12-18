@@ -16,7 +16,7 @@ const ViewSchool = () => {
     const getSchool = async () => {
       try {
         await checkTokenAndRefresh(); 
-        const data = await fetchData("school/view/", checkTokenAndRefresh); // Pass `checkTokenAndRefresh` if required
+        const data = await fetchData("school/view/"); // Pass `checkTokenAndRefresh` if required
         setSchool(data);
       } catch (err) {
         console.error("Error fetching school:", err.message);
