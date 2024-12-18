@@ -13,6 +13,7 @@ const UpdateStudent = () => {
     const [isLoading, setIsLoading] = useState(false);
     const { checkTokenAndRefresh } = useAuth();
     const [grades, setGrades] = useState([]);
+ 
 
     useEffect(() => {
         const getGrades = async () => {
@@ -38,7 +39,7 @@ const UpdateStudent = () => {
         setIsLoading(true); // Start loading when submitting
         try {
             await checkTokenAndRefresh();
-            await updateData(`student/update/${studentData.id}`, studentData);
+            await updateData(`student/update/${studentData.id}/`, studentData);
             toast.success("Student updated successfully!");
         } catch (err) {
             console.error("Error updating student:", err.message);

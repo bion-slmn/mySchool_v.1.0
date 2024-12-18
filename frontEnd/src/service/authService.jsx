@@ -97,7 +97,7 @@ const AuthProvider = ({ children }) => {
   // Middleware to check token validity before accessing any authenticated routes
   const checkTokenAndRefresh = async () => {
     const token = localStorage.getItem("sHule");
-    console.log("Checking token and refreshing................");
+    console.log("Checking token and refreshing................", isTokenExpired(token));
     if (token && isTokenExpired(token)) {
       await refreshToken();
     }

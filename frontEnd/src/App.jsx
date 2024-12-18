@@ -6,14 +6,12 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import ViewSchool from "./components/school/viewSchool";
 import UpdateSchool from "./components/school/updateSchool";
-import CreateTerm from "./components/school/createTerm";
-import ViewTerms from "./components/school/viewTerm";
 import UpdateTerm from "./components/school/updateTerm";
-import CreateGrade from "./components/grade/createGrade";
 import ViewGrades from "./components/grade/viewGrade";
 import UpdateGrades from "./components/grade/updateGrades";
-import CreateStudent from "./components/students/createStudent";
-import { ViewAllStudents, ViewStudent } from "./components/students/viewStudent";
+import UpdateStudent from "./components/students/updateStrudent";
+import CreateFee from "./components/fees/createFee";
+import { ViewFee, ViewFeeInClassOrTerm } from "./components/fees/viewFees";
 
 
 function App() {
@@ -22,8 +20,7 @@ function App() {
       <Router>
         <AuthProvider>
           <Navigationbar />
-         <CreateStudent />
-         <ViewAllStudents />
+         <ViewFeeInClassOrTerm type="grade" />
          
           <Routes>
             <Route path="login" element={<Login />} />
@@ -32,7 +29,8 @@ function App() {
             <Route path="updateTerm" element={<UpdateTerm />} />
             <Route path="viewGrades" element={<ViewGrades />} />
             <Route path="updateGrade" element={<UpdateGrades />} />
-            <Route path="viewStudent" element={<ViewStudent />} />
+            <Route path="updateStudent" element={<UpdateStudent />} />
+            <Route path="viewFee" element={<ViewFee />} />
           </Routes>
         </AuthProvider>
       </Router>

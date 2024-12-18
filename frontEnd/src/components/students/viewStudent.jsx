@@ -24,7 +24,7 @@ export const ViewStudent = () => {
         const getStudent = async () => {
             try {
                 await checkTokenAndRefresh();
-                const data = await fetchData(`student/view/${student_id}`);
+                const data = await fetchData(`student/view/${student_id}/`);
                 setStudent(data);
             } catch (err) {
                 console.error("Error fetching student:", err.message);

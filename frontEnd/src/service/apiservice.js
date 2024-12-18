@@ -19,12 +19,10 @@ export const fetchData = async (endPoint) => {
       return res;
     }
     if (response.status === 401) {
-      console.log("Token expired", 3333333333333333);
       throw new Error("Token expired");
     }
-
     // Throw an error with a proper message
-    throw new Error(res.message || "Something went wrong");
+    throw new Error(res.message || res.detail || "Something went wrong");
   } catch (error) {
     console.error(error, "Error fetching data:", error.message);
     throw error; // Re-throw the error so the caller can handle it
