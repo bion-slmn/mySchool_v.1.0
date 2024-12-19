@@ -11,7 +11,12 @@ import ViewGrades from "./components/grade/viewGrade";
 import UpdateGrades from "./components/grade/updateGrades";
 import UpdateStudent from "./components/students/updateStrudent";
 import CreateFee from "./components/fees/createFee";
-import { ViewFee, ViewFeeInClassOrTerm } from "./components/fees/viewFees";
+import {  ViewFeeInClassOrTerm } from "./components/fees/viewFees";
+import CreatePayments from "./components/payments/createPayments";
+import { ViewFeeandPayments } from "./pages/FeesandPayment";
+import { ViewPaymentonStudent } from "./components/payments/viewPayments";
+import { ViewPaymentDetails } from "./components/payments/viewPayments";
+import { UpdatePayment } from "./components/payments/updatePayment";
 
 
 function App() {
@@ -20,8 +25,7 @@ function App() {
       <Router>
         <AuthProvider>
           <Navigationbar />
-         <ViewFeeInClassOrTerm type="grade" />
-         
+          
           <Routes>
             <Route path="login" element={<Login />} />
             <Route path="updateSchool" element={<UpdateSchool/>} />
@@ -30,7 +34,10 @@ function App() {
             <Route path="viewGrades" element={<ViewGrades />} />
             <Route path="updateGrade" element={<UpdateGrades />} />
             <Route path="updateStudent" element={<UpdateStudent />} />
-            <Route path="viewFee" element={<ViewFee />} />
+            <Route path="viewFee" element={<ViewFeeandPayments />} />
+            <Route path="viewPayments" element={<ViewPaymentonStudent />} />
+            <Route path="/viewPayments/PaymentDetails" element={<ViewPaymentDetails />} />
+            <Route path="viewPayments/PaymentDetails/updatePayment" element={<UpdatePayment />} />
           </Routes>
         </AuthProvider>
       </Router>

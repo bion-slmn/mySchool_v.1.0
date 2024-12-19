@@ -43,8 +43,8 @@ class PaymentonFeeView(APIView):
         '''
         Delete an existing payment.
         '''
-        payment_deleted = self.payment_service.delete_payment(payment_id)
-        return Response(payment_deleted, status=status.HTTP_200_OK)
+        self.payment_service.delete_payment(payment_id)
+        return Response('Deleted ....', status=status.HTTP_200_OK)
     
 
 # get the payment of a fee for a specific student

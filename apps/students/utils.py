@@ -22,6 +22,12 @@ class StudentService:
         Get students from the id prodived
         '''
         return get_object_or_404(Student, id=student_id)
+    
+    def student_in_grade(self, grade_id: int) -> List[Student]:
+        '''
+        Get students in a particular grade
+        '''
+        return Student.objects.filter(grade_id=grade_id).values('id', 'name')
 
     def create_student(self, student_info: dict, user: User) -> Student:
         '''

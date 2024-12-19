@@ -102,7 +102,7 @@ export const ViewFeeInClassOrTerm = ({ type }) => {
 
     const handleClick = (fee) => {
         console.log("Fee clicked:", fee);
-        navigate("/viewFee", { state: { fee_id: fee.id } });
+        navigate("/viewFee", { state: { fee_id: fee.id, total_amount : fee.total_amount } });
     };
 
     return (

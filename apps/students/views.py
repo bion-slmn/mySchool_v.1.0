@@ -59,3 +59,15 @@ class AllStudentView(APIView):
         students = self.student_service.get_school_students(request.user)
         students = StudentSerializer(students, many=True).data
         return Response(students)
+    
+
+class StudentInGradeView(APIView):
+    def __init__(self, student_service=None):
+        self.student_service = student_service or StudentService()
+
+    def get(self, request: HttpRequest, grade_id:str) ->Response:
+        '''
+        Get all students in the grade
+        ''' 
+        students = self.student_service.student_in_grade(grade_id)
+        return Response(students, status=status.HTTP_200_OK)
