@@ -17,7 +17,7 @@ const UpdateSchool = () => {
   const navigate = useNavigate(); // Correct usage of `useNavigate`
 
   if (!school) {
-    navigate("/viewSchool");
+    navigate("/school");
   }
   // Handle input changes
   const handleInput = (e) => {

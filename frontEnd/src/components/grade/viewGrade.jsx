@@ -43,8 +43,13 @@ const ViewGrades = () => {
         setGrades((prevGrades) => prevGrades.filter((grade) => grade.id !== grade_id));
     }
 
+    const handleClick = (grade) => {
+        console.log("View button clicked!");
+    };
+
     return (
         <div className="container">
+            <h2>View Grades</h2>
             {isLoading ? (
                 <div className="d-flex justify-content-center">
                     <Spinner animation="border" variant="primary" />
@@ -53,7 +58,7 @@ const ViewGrades = () => {
                 <Row>
                     {grades.map((grade) => (
                         <Col md={4} sm={6} xs={12} key={grade.id} className="mb-4">
-                            <Card>
+                            <Card onClick={() => handleClick(grade)}>
                                 <Card.Body>
                                     <Card.Title>{grade.name}</Card.Title>
                                     <Card.Text>{grade.description}</Card.Text>
@@ -61,6 +66,7 @@ const ViewGrades = () => {
                                         variant="primary"
                                         onClick={() => handleUpdate(grade)}
                                         className="me-2"
+                                        size="sm"
                                     >
                                         Update
                                     </Button>

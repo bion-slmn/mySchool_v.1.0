@@ -32,7 +32,7 @@ const UpdateGrades = () => {
             await checkTokenAndRefresh();
             await updateData(`class/update/${gradeData.id}/`, gradeData);
             toast.success("Grade updated successfully!");
-            navigate("/viewGrades");
+            navigate("/grades");
         } catch (err) {
             console.error("Error updating grade:", err.message);
             toast.error(err.message || "Failed to update grade. Please try again.");

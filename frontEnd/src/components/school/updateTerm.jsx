@@ -37,7 +37,7 @@ const UpdateTerm = () => {
             const endpoint = `school/term/update/${term_id}`;
             await updateData(endpoint, payload);
             toast.success("Term updated successfully!");
-            navigate("/viewTerm"); // Navigate after success
+            navigate("/school"); // Navigate after success
         } catch (error) {
             console.error("Error updating term data:", error);
             toast.error(error?.response?.data?.message || "Failed to update term. Please try again.");

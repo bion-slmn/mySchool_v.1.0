@@ -41,6 +41,8 @@ const ViewSchool = () => {
 
   return (
     <div className="container">
+      <br />
+      <h2>View School</h2>
       <Card className="mb-3">
         {school ? (
           <Card.Body>
@@ -54,8 +56,8 @@ const ViewSchool = () => {
       </Card>
 
       {/* Update Button */}
-      <Button variant="primary" onClick={() => handleUpdate(school)}>
-        Update
+      <Button variant="primary" onClick={() => handleUpdate(school)} size="sm">
+        Update School
       </Button>
     </div>
   );

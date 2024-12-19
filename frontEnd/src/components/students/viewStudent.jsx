@@ -75,10 +75,8 @@ export const ViewStudent = () => {
 
 };
 
-// view all students
-
-
-export const ViewAllStudents = () => {
+// view all students in the school or a specific grade
+export const ViewAllStudents = ({gradeId=null}) => {
     const [students, setStudents] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const { checkTokenAndRefresh } = useAuth();
@@ -86,9 +84,10 @@ export const ViewAllStudents = () => {
 
     useEffect(() => {
         const getStudents = async () => {
+            const endpoint = gradeId ? `student/grade/${gradeId}/` : "student/view-all/";
             try {
                 await checkTokenAndRefresh();
-                const data = await fetchData("student/view-all/");
+                const data = await fetchData(endpoint);
                 setStudents(data);
             } catch (err) {
                 console.error("Error fetching students:", err.message);

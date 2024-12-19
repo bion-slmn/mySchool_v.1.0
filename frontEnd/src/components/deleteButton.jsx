@@ -22,7 +22,7 @@ const DeleteButton = ({ endpoint, onSuccess, label = "Delete" }) => {
     };
 
     return (
-        <Button variant="danger" onClick={handleDelete}>
+        <Button variant="danger" onClick={handleDelete} size="sm">
             {label}
         </Button>
     );

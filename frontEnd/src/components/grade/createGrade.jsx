@@ -29,7 +29,15 @@ const CreateGrade = () => {
   };
 
   return (
-    <div className="container">
+    <div
+  className="container "
+  style={{
+    border: "1px solid lightgray",
+    borderRadius: "5px",
+    padding: "16px", // Space inside the border
+    margin: "16px", // Space outside the border
+  }}>
+      <h2>Create a grade</h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Label>Grade Name</Form.Label>

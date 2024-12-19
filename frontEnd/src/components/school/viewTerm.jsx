@@ -46,6 +46,8 @@ const ViewTerms = () => {
 
     return (
         <div className="container">
+            <br />
+            <h2>View Terms</h2>
             {terms && terms.length > 0 ? (
                 <Row>
                     {terms.map((term) => (
@@ -61,7 +63,7 @@ const ViewTerms = () => {
                                     <Button
                                         variant="primary"
                                         onClick={() => handleUpdate(term, term.id)}
-                                        className="me-2"
+                                        className="me-2" size="sm" 
                                     >
                                         Update
                                     </Button>
