@@ -18,12 +18,14 @@ export const ViewPaymentonFee = () => {
     let { fee_id, total_amount, fee } = location.state;
     const navigate = useNavigate();
 
+    if (!fee_id) {
+        fee_id = fee.id;
+        total_amount = fee.total_amount;
+    }
+
     useEffect(() => {
         const fetchDataAsync = async () => {
-            if (!fee_id) {
-                fee_id = fee.id;
-                total_amount = fee.total_amount;
-            }
+            
             console.log("Fee ID:", fee_id, total_amount, fee);
 
             try {

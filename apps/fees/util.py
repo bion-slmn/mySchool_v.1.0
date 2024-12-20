@@ -168,6 +168,12 @@ class FeeService:
         '''
         grade = self.validator.validate_grade(grade_id)
         return grade.fees.all()
+    
+    def serialize_fees(self, fees):
+        '''
+        Serialize a list of fees and return the data.
+        '''
+        return FeeSerializer(fees, many=True).data
 
     def create_fees(self, request):
         '''

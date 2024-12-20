@@ -4,6 +4,9 @@ from rest_framework import status
 from django.http import HttpRequest
 from .models import Payment
 from .utils import PaymentService
+from apps.fees.util import FeeService
+from apps.classes.utils import GradeService
+
 
 
 
@@ -63,6 +66,22 @@ class PaymentonFeeStudentView(APIView):
         fee_id = request.query_params.get('fee_id')
         payment = self.payment_service.get_student_payment_on_fee(student_id, fee_id)
         return Response(payment, status=status.HTTP_200_OK)
+
+class PaymentsinGradeView(APIView):
+
+    def __init__(self, grade_service: GradeService = None,fess_service: FeeService = None):
+        self.grade_service = grade_service or GradeService()
+        self.fess_service = fess_service or FeeService()
+
+    def get(self, request: HttpRequest, grade_id: int):
+        '''
+        Return a list fees for each fee total amount, total paid and total number of students ina grade.
+        '''
+        fees_in_grade = self.fess_service.get_fees_by_grade(grade_id)
+        serialised_fees = self.fess_service.serialize_fees(fees_in_grade)
+        num_students = self.grade_service.get_total_number_of_students(grade_id)
+        payments = {'students': num_students, 'fees': serialised_fees}
+        return Response(payments, status=status.HTTP_200_OK)
     
 
 class CreateDailyPaymentView(APIView):

@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (PaymentonFeeView, PaymentonFeeStudentView,
-                     CreateDailyPaymentView)
+                     CreateDailyPaymentView, PaymentsinGradeView)
 
 
 urlpatterns = [
@@ -11,4 +11,5 @@ urlpatterns = [
 
     path('student/', PaymentonFeeStudentView.as_view(), name='view_student_payments'),
     path('create/daily/', CreateDailyPaymentView.as_view(), name='create_daily_payment'),
+    path('grade/<str:grade_id>/', PaymentsinGradeView.as_view(), name='view_grade_payments'),
 ]

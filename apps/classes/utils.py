@@ -52,3 +52,9 @@ class GradeService:
         '''
         grade = self.get_grade_object(grade_id)
         grade.delete()
+
+    def get_total_number_of_students(self, grade_id):
+        '''
+        Return the total number of students in a grade.
+        '''
+        return Grade.objects.get(id=grade_id).students.count()
