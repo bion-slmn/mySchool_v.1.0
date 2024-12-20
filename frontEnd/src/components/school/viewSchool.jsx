@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../service/authService";
+import CreateSchool from "./createSchool";
 
 const ViewSchool = () => {
   const [school, setSchool] = useState(null); // State to hold school data
@@ -51,7 +52,7 @@ const ViewSchool = () => {
             <Card.Text>{school.address}</Card.Text>
           </Card.Body>
         ) : (
-          <p>No school data available.</p>
+          <CreateSchool />
         )}
       </Card>
 

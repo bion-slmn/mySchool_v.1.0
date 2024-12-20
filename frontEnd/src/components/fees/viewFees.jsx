@@ -47,11 +47,13 @@ export const ViewFee = () => {
 
     return (
         <div className="container">
+            <h2>Fee Details</h2>
             {isLoading ? (
                 <div className="d-flex justify-content-center">
                     <Spinner animation="border" variant="primary" />
                 </div>
             ) : (
+                
                 <Card>
                     <Card.Body>
                         <Card.Title>{fee.name}</Card.Title>
@@ -107,6 +109,7 @@ export const ViewFeeInClassOrTerm = ({ type }) => {
 
     return (
         <div className="container">
+            <h4>Select a {type === "term" ? "Term" : "Grade"} to View Fee</h4>
             {/* Use Selector for both Term and Grade */}
             <Selector 
                 onSelect={(id) => setSelectedId(id)} 

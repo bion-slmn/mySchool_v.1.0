@@ -15,11 +15,17 @@ export const ViewPaymentonFee = () => {
     const [isLoading, setIsLoading] = useState(true);
     const { checkTokenAndRefresh } = useAuth();
     const location = useLocation();
-    const { fee_id, total_amount } = location.state;
+    let { fee_id, total_amount, fee } = location.state;
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchDataAsync = async () => {
+            if (!fee_id) {
+                fee_id = fee.id;
+                total_amount = fee.total_amount;
+            }
+            console.log("Fee ID:", fee_id, total_amount, fee);
+
             try {
                 await checkTokenAndRefresh();
                 const paymentData = await fetchData(`payment/view/${fee_id}`);
@@ -54,7 +60,15 @@ export const ViewPaymentonFee = () => {
         toast.info("Redirecting to view payments...");
         navigate("/viewPayments", { state: { payment, fee_id } });
     }
+
     
+    if (!setIsLoading && payments.length === 0) {
+        return (
+            <div className="container">
+                <h3>No payments found</h3>
+            </div>
+        );
+    }
 
     return (
         <div className="container">

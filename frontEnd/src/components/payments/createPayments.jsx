@@ -88,6 +88,7 @@ const CreatePayments = () => {
 
     return (
         <div className="container">
+            <h4 centered >Add Payment</h4>
             {isLoading ? (
                 <div className="d-flex justify-content-center">
                     <Spinner animation="border" variant="primary" />

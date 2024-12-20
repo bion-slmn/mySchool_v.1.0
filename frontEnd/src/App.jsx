@@ -13,6 +13,9 @@ import { ViewPaymentDetails } from "./components/payments/viewPayments";
 import { UpdatePayment } from "./components/payments/updatePayment";
 import School from "./pages/school";
 import Grades from "./pages/grades";
+import ViewStudentsinGrade from "./pages/student";
+import { ViewStudent } from "./components/students/viewStudent";
+import FeesAndPayments from "./pages/fees";
 
 
 function App() {
@@ -28,11 +31,14 @@ function App() {
             <Route path="school" element={<School />} />
             <Route path="updateTerm" element={<UpdateTerm />} />
             <Route path="grades" element={<Grades />} />
+            <Route path="viewStudents" element={<ViewStudentsinGrade />} />
             <Route path="updateGrade" element={<UpdateGrades />} />
             <Route path="updateStudent" element={<UpdateStudent />} />
             <Route path="viewPayments" element={<ViewPaymentonStudent />} />
             <Route path="/viewPayments/PaymentDetails" element={<ViewPaymentDetails />} />
             <Route path="viewPayments/PaymentDetails/updatePayment" element={<UpdatePayment />} />
+            <Route path="viewStudent" element={<ViewStudent />} />
+            <Route path="viewFee" element={<FeesAndPayments />} />
           </Routes>
         </AuthProvider>
       </Router>

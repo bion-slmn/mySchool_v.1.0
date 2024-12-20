@@ -69,6 +69,7 @@ class ValidateFeeData:
         '''
         Validate the fee data and return the serializer object.
         '''
+        print(fee_data, 22222222222)
         serializer = FeeSerializer(data=fee_data, partial=True)
         serializer.is_valid(raise_exception=True)
         return serializer

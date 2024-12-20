@@ -45,6 +45,7 @@ const ViewGrades = () => {
 
     const handleClick = (grade) => {
         console.log("View button clicked!");
+        navigate("/viewStudents", { state: { grade } });
     };
 
     return (

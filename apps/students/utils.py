@@ -27,7 +27,7 @@ class StudentService:
         '''
         Get students in a particular grade
         '''
-        return Student.objects.filter(grade_id=grade_id).values('id', 'name')
+        return Student.objects.filter(grade_id=grade_id).values('id', 'name', 'gender')
 
     def create_student(self, student_info: dict, user: User) -> Student:
         '''

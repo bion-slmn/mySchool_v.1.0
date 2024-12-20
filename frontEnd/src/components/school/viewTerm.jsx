@@ -7,16 +7,19 @@ import Col from "react-bootstrap/Col";
 import DeleteButton from "../deleteButton";
 import { fetchData } from "../../service/apiservice";
 import Button from "react-bootstrap/Button";
+import { useAuth } from "../../service/authService";
 
 
 const ViewTerms = () => {
     const [terms, setTerms] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const { checkTokenAndRefresh } = useAuth();
 
     useEffect(() => {
         const getTerms = async () => {
             try {
+                await checkTokenAndRefresh();
                 const data = await fetchData("school/term/view/");
                 setTerms(data);
             } catch (err) {

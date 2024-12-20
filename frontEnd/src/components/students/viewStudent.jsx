@@ -25,6 +25,7 @@ export const ViewStudent = () => {
             try {
                 await checkTokenAndRefresh();
                 const data = await fetchData(`student/view/${student_id}/`);
+                console.log(data);
                 setStudent(data);
             } catch (err) {
                 console.error("Error fetching student:", err.message);
@@ -49,6 +50,8 @@ export const ViewStudent = () => {
 
     return (
         <div className="container">
+            <br />
+            <h2>Details of {student.name} </h2>
             {isLoading ? (
                 <div className="d-flex justify-content-center">
                     <Spinner animation="border" variant="primary" />
@@ -56,14 +59,16 @@ export const ViewStudent = () => {
             ) : (
                 <Card>
                     <Card.Body>
-                        <Card.Title>{student.name}</Card.Title>
-                        <Card.Text>{student.date_of_birth}</Card.Text>
-                        <Card.Text>{student.gender}</Card.Text>
-                        <Card.Text>{student.grade_name}</Card.Text>
+                        <Card.Title>Name: {student.name}</Card.Title>
+                        <Card.Text>DOB: {student.date_of_birth}</Card.Text>
+                        <Card.Text>Gender: {student.gender}</Card.Text>
+                        <Card.Text>Grade: {student.grade_name}</Card.Text>
+                        <Card.Text>Date Joined: {new Date(student.created).toLocaleDateString()}</Card.Text>
+
                         <Button
                             variant="primary"
                             onClick={() => handleUpdate(student)}
-                            className="me-2">Update</Button>
+                            className="me-2" size="sm">Update</Button>
                         <DeleteButton
                             endpoint={`student/delete/${student_id}`}
                             onSuccess={() => handleDelete(student_id)}  />
@@ -76,11 +81,13 @@ export const ViewStudent = () => {
 };
 
 // view all students in the school or a specific grade
-export const ViewAllStudents = ({gradeId=null}) => {
+export const ViewAllStudents = ({grade=null}) => {
     const [students, setStudents] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const { checkTokenAndRefresh } = useAuth();
     const navigate = useNavigate();
+    const gradeId = grade?.id;
+    const gradeName = grade?.name;
 
     useEffect(() => {
         const getStudents = async () => {
@@ -88,6 +95,7 @@ export const ViewAllStudents = ({gradeId=null}) => {
             try {
                 await checkTokenAndRefresh();
                 const data = await fetchData(endpoint);
+                console.log(data);
                 setStudents(data);
             } catch (err) {
                 console.error("Error fetching students:", err.message);
@@ -103,10 +111,7 @@ export const ViewAllStudents = ({gradeId=null}) => {
     const handleStudentClick = (student_id) => {
         navigate("/viewStudent", { state: { student_id } });
     };
-
-    const handleGradeClick = (grade_id) => {
-        navigate("/viewGrade", { state: { grade_id } });
-    };
+        
 
     return (
         <div className="container">
@@ -129,13 +134,8 @@ export const ViewAllStudents = ({gradeId=null}) => {
                                 <td>{student.name}</td>
                                 <td>{student.gender}</td>
                                 <td
-                                    onClick={(e) => {
-                                        e.stopPropagation(); // Prevent navigating to student view
-                                        handleGradeClick(student.grade.id);
-                                    }}
-                                    style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
                                 >
-                                    {student.grade_name}
+                                    {student.grade_name || gradeName}
                                 </td>
                             </tr>
                         ))}
