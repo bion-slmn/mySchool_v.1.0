@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  backend:
+    depends_on:
+      - db
+    build: .
+    ports:
+      - 8000:8000
+    volumes:
+      - backend: src/app
+    env_file:
+      - .env
+
+  db:
+    image: postgres:custom-local
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+
+  frontend:
+    build:
+      context: ./frontEnd
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontEnd:/app
+    environment:
+      - NODE_ENV=production
