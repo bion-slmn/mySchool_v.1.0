@@ -101,3 +101,7 @@ lint:
 	@echo "Checking type hints with mypy..."
 	$(POETRY_RUN) mypy ./
 
+build:
+	@echo "--- Builing with docker ---"
+	docker-compose up --build
+
