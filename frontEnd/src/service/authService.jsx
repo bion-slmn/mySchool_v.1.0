@@ -68,6 +68,7 @@ const AuthProvider = ({ children }) => {
     });
 
     const res = await response.json();
+    console.log(API_URL, res)
     if (response.ok && res.access) {
       const decodedUser = jwtDecode(res.access);
       setUser(decodedUser);
@@ -80,6 +81,7 @@ const AuthProvider = ({ children }) => {
       navigate("/dashboard");
     } else {
       localStorage.setItem("sHule", "");
+      console.log(res, res.message, 11111111111111111111111111111111)
       toast.error(res.message);
       throw new Error(res.message);
     }
