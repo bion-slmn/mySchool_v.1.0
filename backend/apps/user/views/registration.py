@@ -6,6 +6,8 @@ from django.http import HttpRequest
 from ..utils import (get_school_from_token, get_user_by_school, 
                     add_role_to_user, validate_and_save_data)
 from ..serializer import UserSerializer
+from rest_framework.permissions import AllowAny
+
 
 
 
