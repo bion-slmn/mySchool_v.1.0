@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./backend # Pointing to the backend Dockerfile
+    volumes:
+      - ./backend:/opt/app/
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env # Loading the backend environment variables
+
+  frontend:
+    build:
+      context: ./frontEnd # Pointing to the frontend Dockerfile
+    volumes:
+      - ./frontEnd:/opt/app/
+    ports:
+      - "3000:3000" # Assuming your React app runs on port 3000
