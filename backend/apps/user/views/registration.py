@@ -62,3 +62,10 @@ class CreateAdminView(APIView):
         data = add_role_to_user(request, 'admin')
         data = validate_and_save_data(UserSerializer, data)
         return Response(data, status=status.HTTP_201_CREATED)
+
+
+class TestApi(APIView):
+     permission_classes = [AllowAny]
+
+     def get(self, request: HttpRequest) -> Response:
+        return Response('Application server is live.................')

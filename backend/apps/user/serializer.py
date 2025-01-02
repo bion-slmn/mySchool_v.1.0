@@ -11,6 +11,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         
         token['name'] = user.first_name
+        print(user.first_name, 111111111111111111111111111111111111111)
         if hasattr(user, 'schools'):
             token['school'] = user.schools.name
 

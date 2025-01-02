@@ -1,5 +1,5 @@
 from .views.password_update import PasswordResetView
-from .views.registration import UserListView, UserView, CreateAdminView
+from .views.registration import UserListView, UserView, CreateAdminView, TestApi
 from .views.loginLogout import MyTokenObtainPairView
 from rest_framework_simplejwt.views import TokenRefreshView 
 from django.urls import path
@@ -14,4 +14,5 @@ urlpatterns = [
     path('reset-password/request/', PasswordResetView.as_view(), name='reset_password-request'),
     path('reset-password/confirm-token/', PasswordResetView.as_view(), name='reset_password-request'),
     path('reset-password/change/', PasswordResetView.as_view(), name='reset_password'),
+    path('test/', TestApi.as_view())
 ]
