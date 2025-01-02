@@ -12,10 +12,12 @@ DATABASES = {
 }
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-print(DEBUG, 222222222222222222222)
 
+DEBUG = False
+
+ALLOWED_HOSTS = ['*']
 CORS_ALLOWED_ORIGINS = [
-    "https://my-school-v-1-0.vercel.app",
+    "https://myschool-v-1-0.onrender.com",  
+    "http://localhost:3000", '*'
 ]
 
