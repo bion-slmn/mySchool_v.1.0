@@ -42,7 +42,7 @@ class UserView(APIView):
 
 
 class CreateAdminView(APIView):
-    #permission_classes = [AllowAny]
+    permission_classes = [AllowAny]
     def __init__(self, userservice=None):
         self.userservice = userservice or Userservice()
 
