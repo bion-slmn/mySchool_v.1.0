@@ -39,6 +39,7 @@ const CreateStudent = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         try {
             await postData("student/create/", student);
             toast.success("Student created successfully!");
@@ -46,6 +47,7 @@ const CreateStudent = () => {
             console.error("Error creating student:", err.message);
             toast.error(err.message || "Failed to create student. Please try again.");
         }
+        setIsLoading(false);
     };
 
     return (
