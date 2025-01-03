@@ -8,12 +8,12 @@ import { useAuth } from '../service/authService';
 import { useNavigate } from 'react-router-dom';
 
 function Navigationbar() {
-  const {  logout, loginAction } = useAuth(); 
+  const { logOut, loginAction } = useAuth();
   const isAuthenticated = !!localStorage.getItem('sHule');
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await logout(); // Perform logout action
+    await logOut(); // Perform logout action
     navigate('/'); // Redirect to home page
   };
 

@@ -4,9 +4,10 @@ import { Button, Container, Row, Col, Card } from "react-bootstrap";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const isAuthenticated = !!localStorage.getItem('sHule');
 
   const handleLoginClick = () => {
-    navigate("/login"); // Redirect to login page
+    if (!isAuthenticated) { navigate("/login"); }
   };
 
   return (
@@ -15,7 +16,7 @@ const HomePage = () => {
       <p className="text-muted">
         Manage all aspects of your school in one place: students, teachers, classes, fees, and reports.
       </p>
-      
+
       <Row className="justify-content-center mt-4">
         <Col md={6}>
           <Card className="shadow-sm p-4">
