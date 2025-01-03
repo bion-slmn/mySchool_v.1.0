@@ -17,6 +17,7 @@ const CreateStudent = () => {
     const [grades, setGrades] = useState([]);
 
     useEffect(() => {
+        setIsLoading(true);
         const getGrades = async () => {
             try {
                 await checkTokenAndRefresh();
