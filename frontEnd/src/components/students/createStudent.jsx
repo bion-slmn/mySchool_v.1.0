@@ -9,8 +9,8 @@ const CreateStudent = () => {
     const [student, setStudent] = useState({
         name: "",
         date_of_birth: "",
-        gender: "Male", // Default gender
-        grade: "", // Initially empty
+        gender: "",
+        grade: "",
     });
     const [isLoading, setIsLoading] = useState(true);
     const { checkTokenAndRefresh } = useAuth();
