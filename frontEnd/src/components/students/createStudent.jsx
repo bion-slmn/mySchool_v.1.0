@@ -9,7 +9,7 @@ const CreateStudent = () => {
     const [student, setStudent] = useState({
         name: "",
         date_of_birth: "",
-        gender: "",
+        gender: "male",
         grade: "",
     });
     const [isLoading, setIsLoading] = useState(true);
