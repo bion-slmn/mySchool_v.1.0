@@ -7,7 +7,7 @@ const HomePage = () => {
   const isAuthenticated = !!localStorage.getItem('sHule');
 
   const handleLoginClick = () => {
-    if (!isAuthenticated) { navigate("/login"); }
+    navigate("/login"); // Redirect to login page
   };
 
   return (
@@ -25,9 +25,9 @@ const HomePage = () => {
               <Card.Text>
                 To begin, please log in with your credentials. The system allows you to manage students, fees, classes, and more.
               </Card.Text>
-              <Button variant="primary" onClick={handleLoginClick}>
+              {!isAuthenticated && <Button variant="primary" onClick={handleLoginClick}>
                 Login
-              </Button>
+              </Button>}
             </Card.Body>
           </Card>
         </Col>
