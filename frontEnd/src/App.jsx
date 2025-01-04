@@ -24,8 +24,12 @@ import CreateFee from "./components/fees/createFee";
 import CreatePayments from "./components/payments/createPayments";
 import CreateTerm from "./components/school/createTerm";
 import PrivateRoute from "./components/privateRoute";
+import { useEffect } from "react";
 
 function App() {
+  useEffect(() => {
+    document.title = "sHule | Financial Manager"
+  }, [])
   return (
     <div className="App">
       <Router>

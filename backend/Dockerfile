@@ -1,4 +1,4 @@
-FROM python:3.9-alpine
+FROM python:3.9.2-alpine
 
 RUN apk add --update --no-cache \
     gcc \
@@ -22,7 +22,7 @@ WORKDIR /src/app
 RUN pip install --upgrade pip
 RUN pip install poetry
 COPY pyproject.toml poetry.lock ./
-RUN poetry install --no-root
+RUN poetry install
 
 # Copy application files
 COPY . /src/app/
