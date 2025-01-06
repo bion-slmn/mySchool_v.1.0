@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'apps.students',
     'apps.fees',
     'apps.payments',
+    'apps.expense',
+
 
     #third party apps
     'rest_framework',

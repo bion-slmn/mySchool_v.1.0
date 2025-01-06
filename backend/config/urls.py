@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/student/', include('apps.students.urls')),
     path('api/fee/', include('apps.fees.urls')),
     path('api/payment/', include('apps.payments.urls')),
+    path('api/expense/', include('apps.payments.urls')),
 ]
 
 handler404 = custom_404_handler
