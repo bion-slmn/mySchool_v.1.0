@@ -11,9 +11,8 @@ const errorHandler = (response) => {
         throw new Error(response.message.join("\n"));
     }
     if (response.message && typeof response.message === 'object') {
-        const formattedMessage = Object.entries(response.message)
-            .map(([key, value]) => `${key}: ${value}`)
-            .join("\n");
+        const formattedMessage = Object.values(response.message)
+        .join("\n ");
         throw new Error(formattedMessage);
     }
 
