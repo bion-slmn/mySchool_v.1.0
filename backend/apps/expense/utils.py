@@ -11,7 +11,7 @@ class ExpenseService:
         get expenses in a term, return id, name, amount
         '''
         term_expenses = Expense.objects.filter(term=term_id)
-        if term_expenses.exists():  
+        if term_expenses:  
             return list(term_expenses.values("id", "name", "amount"))
         return []
 

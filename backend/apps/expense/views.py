@@ -13,7 +13,6 @@ class ViewExpenseInTerm(APIView):
         '''
         get all expenses of a term
         '''
-        print(request.query_params, 22222222222222)
         term_id = self.expense_service.get_query_param("term_id", request)     
         term_expenses = self.expense_service.get_expenses_in_term(term_id)
 
@@ -52,7 +51,7 @@ class ExpenseView(APIView):
         """
         Update an existing expense.
         """
-        expense_id = self.expense_service.get_query_param("expense_id", request)
-        update_data = request.data
-        updated_expense = self.expense_service.update_expense(expense_id, update_data)
+        expense_id = self.expense_service.get_query_param("expense_id", request)        
+        updated_expense = self.expense_service.update_expense(expense_id, request.data)
+        
         return Response(updated_expense, status=status.HTTP_200_OK)
