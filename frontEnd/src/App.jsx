@@ -25,6 +25,7 @@ import CreatePayments from "./components/payments/createPayments";
 import CreateTerm from "./components/school/createTerm";
 import PrivateRoute from "./components/privateRoute";
 import { useEffect } from "react";
+import { MultiStepCreateStudent } from "./components/students/createStudent";
 
 function App() {
   useEffect(() => {
@@ -41,7 +42,7 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route element={<PrivateRoute />}>
               <Route path="dashboard" element={<Dashboard />} />
-              <Route path="createStudent" element={<CreateStudent />} />
+              <Route path="createStudent" element={<MultiStepCreateStudent />} />
               <Route path="createFee" element={<CreateFee />} />
               <Route path="createPayments" element={<CreatePayments />} />
               <Route path="updateSchool" element={<UpdateSchool />} />

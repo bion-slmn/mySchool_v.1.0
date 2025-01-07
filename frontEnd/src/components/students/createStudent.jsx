@@ -4,14 +4,19 @@ import { toast } from "react-toastify";
 import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import SubmitButton from "../submitButton";
+import AdmitorNewStudent from "./adminStudent";
+import CreatePayments from "../payments/createPayments";
 
-const CreateStudent = () => {
+
+const CreateStudent = ({ nextStep, prevStep }) => {
     const [student, setStudent] = useState({
         name: "",
         date_of_birth: "",
         gender: "male",
         grade: "",
     });
+
+
     const [isLoading, setIsLoading] = useState(true);
     const { checkTokenAndRefresh } = useAuth();
     const [grades, setGrades] = useState([]);
@@ -44,6 +49,8 @@ const CreateStudent = () => {
         try {
             await postData("student/create/", student);
             toast.success("Student created successfully!");
+            if (nextStep) nextStep();
+            if (prevStep) prevStep();
         } catch (err) {
             console.error("Error creating student:", err.message);
             toast.error(err.message || "Failed to create student. Please try again.");
@@ -112,3 +119,65 @@ const CreateStudent = () => {
 };
 
 export default CreateStudent;
+
+
+export const MultiStepCreateStudent = () => {
+    const [step, setStep] = useState(1);
+    const [formData, setFormData] = useState({
+        admissionType: "", // Tracks whether it's a new admission or not
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    const nextStep = () => {
+        if (step === 2 && formData.admissionType !== "new") {
+            // If admissionType is not "new", reset to step 1
+            setStep(1);
+            alert("Admission type is not new. Redirecting to step 1.");
+        } else {
+            // Otherwise, proceed to the next step
+            setStep(step + 1);
+        }
+    };
+
+    const prevStep = () => setStep(step - 1);
+
+    const handleSubmit = () => {
+        alert("Form submitted successfully!");
+        console.log(formData);
+    };
+
+    return (
+        <div>
+            <h1>Adding new student</h1>
+            {step === 1 && (
+                <AdmitorNewStudent
+                    nextStep={nextStep}
+                    handleInputChange={handleInputChange}
+                    formData={formData}
+                />
+            )}
+            {step === 2 && (
+                <CreateStudent
+                    nextStep={nextStep}
+                    prevStep={prevStep}
+                    handleInputChange={handleInputChange}
+                    formData={formData}
+                />
+            )}
+            {step === 3 && (
+                <CreatePayments
+                    prevStep={prevStep}
+                    handleSubmit={handleSubmit}
+                    formData={formData}
+                />
+            )}
+        </div>
+    );
+};
