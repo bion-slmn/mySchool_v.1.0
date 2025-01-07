@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import HttpRequest
-from .services import ExpenseService
+from .utils import ExpenseService
 
 
 class ViewExpenseInTerm(APIView):
@@ -13,7 +13,8 @@ class ViewExpenseInTerm(APIView):
         '''
         get all expenses of a term
         '''
-        term_id = self.expense_service.get_query_param(term_id, request)     
+        print(request.query_params, 22222222222222)
+        term_id = self.expense_service.get_query_param("term_id", request)     
         term_expenses = self.expense_service.get_expenses_in_term(term_id)
 
         return Response(term_expenses, status=status.HTTP_200_OK)
@@ -45,7 +46,7 @@ class ExpenseView(APIView):
         """
         expense_id = self.expense_service.get_query_param("expense_id", request)
         self.expense_service.delete_expense(expense_id)
-        return Response("Expense deleted successfully", status=status.HTTP_204_NO_CONTENT)
+        return Response("Expense deleted successfully", status=status.HTTP_200_OK)
 
     def put(self, request: HttpRequest) -> Response:
         """

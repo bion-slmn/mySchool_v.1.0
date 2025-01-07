@@ -1,6 +1,6 @@
 # services.py
 from .models import Expense
-from .serializers import ExpenseSerializer
+from .serializer import ExpenseSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
 
@@ -21,22 +21,22 @@ class ExpenseService:
         '''
         return get_object_or_404(Expense, id=expense_id)
 
-    def get_detail_of_expense(self, expense_id: str);
+    def get_detail_of_expense(self, expense_id: str):
         '''
         get details of an expense object
         '''
         expense = self.get_expense_object(expense_id)
-        return ExpenseSerializer(expense).default_auto_field
+        return ExpenseSerializer(expense).data
 
     def get_query_param(self, param, request) -> str:
         '''
         get the param passed from the request
         '''
-        param = request.query_params.get("param")  
-        if not param:
-            raise ValidationError(f"{param }is required")
+        value = request.query_params.get(param)  
+        if not value:
+            raise ValidationError(f"{param } is required")
 
-        return param
+        return value
 
     def create_expense(self, expense_data: dict) -> dict:
         """
@@ -46,9 +46,7 @@ class ExpenseService:
         :return: Serialized data of the created expense.
         """
         serializer = ExpenseSerializer(data=expense_data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()  # Save the instance after validation
-        return serializer.data
+        return self._validate_and_save(serializer)
 
     def delete_expense(self, expense_id: str) -> None:
         """
@@ -69,7 +67,13 @@ class ExpenseService:
         :return: Serialized data of the updated expense.
         """
         expense = self.get_expense_object(expense_id)
-        serializer = ExpenseSerializer(expense, data=update_data) 
+        serializer = ExpenseSerializer(expense, data=update_data, partial=True) 
+        return self._validate_and_save(serializer)
+
+    def _validate_and_save(self, serializer):
+        '''
+        validate serializer and save the data
+        '''
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return serializer.data
