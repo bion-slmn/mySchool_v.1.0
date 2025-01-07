@@ -35,5 +35,6 @@ class Student(BaseModel):
         related_name='students'
     )
 
+  
     class Meta:
         unique_together = ('name', 'date_of_birth') 

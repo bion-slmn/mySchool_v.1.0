@@ -6,7 +6,7 @@ import { Form, Spinner } from "react-bootstrap";
 import SubmitButton from "../submitButton";
 
 
-const CreatePayments = () => {
+const CreatePayments = ({ prevStep }) => {
     const [paymentData, setPaymentData] = useState({ fee: "", student: "", amount: "", payment_method: "" });
     const [selectedGrade, setSelectedGrade] = useState(""); // Separate state for grade
     const [isLoading, setIsLoading] = useState(true);
@@ -80,6 +80,7 @@ const CreatePayments = () => {
             await checkTokenAndRefresh();
             await postData("payment/create/", { ...paymentData, grade_id: selectedGrade }); // Include grade in submission
             toast.success("Payment created successfully.");
+            if (prevStep) prevStep();
         } catch (err) {
             console.error("Error creating payment:", err.message);
             toast.error(err.message || "Failed to create payment. Please try again.");
@@ -88,7 +89,11 @@ const CreatePayments = () => {
 
     return (
         <div className="container">
-            <h4 centered >Add Payment</h4>
+            <br />
+            <h5 centered >Add Payment</h5>
+            {prevStep && <h6> Pay admission Fee</h6>}
+            <br />
+
             {isLoading ? (
                 <div className="d-flex justify-content-center">
                     <Spinner animation="border" variant="primary" />
@@ -149,6 +154,7 @@ const CreatePayments = () => {
                         >
                             <option value="">Select Payment Method</option>
                             <option value="CASH">Cash</option>
+                            <option value="Mobile">Mobile</option>
                             <option value="BANK">Bank</option>
                         </Form.Control>
                     </Form.Group>

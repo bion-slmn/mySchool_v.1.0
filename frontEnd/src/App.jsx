@@ -19,13 +19,13 @@ import FeesAndPayments from "./pages/fees";
 import HomePage from "./pages/home";
 import Dashboard from "./pages/dashboard";
 import { ViewPaymentonFee } from "./components/payments/viewPayments";
-import CreateStudent from "./components/students/createStudent";
 import CreateFee from "./components/fees/createFee";
 import CreatePayments from "./components/payments/createPayments";
 import CreateTerm from "./components/school/createTerm";
 import PrivateRoute from "./components/privateRoute";
 import { useEffect } from "react";
 import { MultiStepCreateStudent } from "./components/students/createStudent";
+import CreateGrade from "./components/grade/createGrade";
 
 function App() {
   useEffect(() => {
@@ -44,6 +44,7 @@ function App() {
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="createStudent" element={<MultiStepCreateStudent />} />
               <Route path="createFee" element={<CreateFee />} />
+              <Route path="createGrade" element={<CreateGrade />} />
               <Route path="createPayments" element={<CreatePayments />} />
               <Route path="updateSchool" element={<UpdateSchool />} />
               <Route path="createTerm" element={<CreateTerm />} />

@@ -1,0 +1,5 @@
+/* Custom styling for the Navbar toggle button */
+.custom-toggler {
+    border: 3px solid yellow;
+    background-color: black;
+}

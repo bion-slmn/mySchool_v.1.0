@@ -6,6 +6,8 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
 import { useAuth } from '../service/authService';
 import { useNavigate } from 'react-router-dom';
+import "../styles/navbar.css";
+
 
 function Navigationbar() {
   const { logOut, loginAction } = useAuth();
@@ -23,21 +25,22 @@ function Navigationbar() {
   };
 
   return (
-    <Navbar bg="primary" variant="dark" expand="lg">
+    <Navbar bg="primary" data-bs-theme="dark" expand="lg">
       <Container>
         <Navbar.Brand href="/">sHule</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle aria-controls="basic-navbar-nav" bg="dark" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="dashboard">Dashboard</Nav.Link>
             <Nav.Link href="school">School</Nav.Link>
-            <NavDropdown title="Create" id="basic-nav-dropdown">
-              <NavDropdown.Item href="createTerm">Create Term</NavDropdown.Item>
+            <NavDropdown title="Add" id="basic-nav-dropdown">
+              <NavDropdown.Item href="createTerm">Add Term</NavDropdown.Item>
               <NavDropdown.Item href="createStudent">
                 Add Student
               </NavDropdown.Item>
               <NavDropdown.Item href="createFee">Add Fee</NavDropdown.Item>
               <NavDropdown.Item href="createPayments">Add Payments</NavDropdown.Item>
+              <NavDropdown.Item href="CreateGrade">Add Grade</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="grades">
                 View Grades

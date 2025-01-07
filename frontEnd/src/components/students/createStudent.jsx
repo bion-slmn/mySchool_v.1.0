@@ -50,7 +50,7 @@ const CreateStudent = ({ nextStep, prevStep }) => {
             await postData("student/create/", student);
             toast.success("Student created successfully!");
             if (nextStep) nextStep();
-            if (prevStep) prevStep();
+
         } catch (err) {
             console.error("Error creating student:", err.message);
             toast.error(err.message || "Failed to create student. Please try again.");
@@ -136,15 +136,19 @@ export const MultiStepCreateStudent = () => {
     };
 
     const nextStep = () => {
+        console.log("Current Step:", step);
+        console.log("Admission Type:", formData.admissionType);
+
         if (step === 2 && formData.admissionType !== "new") {
-            // If admissionType is not "new", reset to step 1
             setStep(1);
             alert("Admission type is not new. Redirecting to step 1.");
         } else {
-            // Otherwise, proceed to the next step
             setStep(step + 1);
         }
     };
+
+    const firstStep = () => setStep(1);
+
 
     const prevStep = () => setStep(step - 1);
 
@@ -154,8 +158,10 @@ export const MultiStepCreateStudent = () => {
     };
 
     return (
-        <div>
-            <h1>Adding new student</h1>
+        <div className=" container">
+            <br />
+            <h3 >Adding new student</h3>
+            <br />
             {step === 1 && (
                 <AdmitorNewStudent
                     nextStep={nextStep}
@@ -173,7 +179,7 @@ export const MultiStepCreateStudent = () => {
             )}
             {step === 3 && (
                 <CreatePayments
-                    prevStep={prevStep}
+                    prevStep={firstStep}
                     handleSubmit={handleSubmit}
                     formData={formData}
                 />
