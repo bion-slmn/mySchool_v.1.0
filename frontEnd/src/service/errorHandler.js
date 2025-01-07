@@ -13,6 +13,9 @@ const errorHandler = (response) => {
     if (response.message && typeof response.message === 'object') {
         const formattedMessage = Object.values(response.message)
         .join("\n ");
+        if (formattedMessage === "The fields name, date_of_birth must make a unique set.") {
+            throw new Error('A student with the same name and date of birth already exists.');
+        }
         throw new Error(formattedMessage);
     }
 
