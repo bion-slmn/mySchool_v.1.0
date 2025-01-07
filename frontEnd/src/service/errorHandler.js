@@ -2,6 +2,8 @@ const errorHandler = (response) => {
     if (response.detail) {
         throw new Error(response.detail);
     }
+
+    console.log(response.message, "response.message", 1111111111111111);
     if (response.message && typeof response.message === 'string') {
         throw new Error(response.message);
     }

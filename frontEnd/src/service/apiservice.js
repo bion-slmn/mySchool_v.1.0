@@ -21,7 +21,7 @@ export const fetchData = async (endPoint) => {
       return res;
     }
     if (response.status === 401) {
-      throw new Error("Token expired");
+      throw new Error("Please login to continue");
     }
     
     errorHandler(res);
