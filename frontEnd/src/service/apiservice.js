@@ -55,7 +55,7 @@ export const modifyData = async (endPoint, data, method = "POST") => {
     //await user.checkTokenAndRefresh;
   }
 
-  throw new Error(res.message || "Something went wrong");
+  errorHandler(res);
 };
 
 export const postData = async (endPoint, data) => {
