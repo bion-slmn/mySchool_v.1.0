@@ -43,8 +43,7 @@ def _handle_validation_error(exc, context, response):
             {
                 'status': 'error',
                 'status_code': 400,
-                'message': 'Validation failed',
-                'errors': str(exc),  # Fallback to a string representation of the exception
+                'message': str(exc),  # Fallback to a string representation of the exception
             },
             status=400
         )
