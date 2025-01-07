@@ -1,3 +1,5 @@
+import errorHandler from "./errorHandler";
+
 export const API_URL = "https://myschool-v-1-0.onrender.com/api/";
 
 // function to get data from backend
@@ -21,8 +23,9 @@ export const fetchData = async (endPoint) => {
     if (response.status === 401) {
       throw new Error("Token expired");
     }
-    // Throw an error with a proper message
-    throw new Error(res.message || res.detail || "Something went wrong");
+    
+    errorHandler(res);
+
   } catch (error) {
     console.error(error, "Error fetching data:", error.message);
     throw error; // Re-throw the error so the caller can handle it
