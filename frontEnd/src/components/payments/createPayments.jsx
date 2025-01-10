@@ -36,13 +36,12 @@ const CreatePayments = ({ prevStep }) => {
         const grade = e.target.value;
         setSelectedGrade(grade);
 
-        if (prevStep) {
-            let feeUrl = `fee/type/?fee_type=ADMISSION`;
-        }
+        let feeUrl = prevStep ? `fee/type/?fee_type=ADMISSION` : `fee/grade/${grade}`;
+
 
 
         if (grade) {
-            let feeUrl = `fee/grade/${grade}`;
+
             try {
                 setIsLoading(true);
                 await checkTokenAndRefresh();
