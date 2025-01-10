@@ -70,3 +70,17 @@ class GradeFee(APIView):
         fees = self.fee_service.get_fees_by_grade(grade_id)
         fees_data = FeeSerializer(fees, many=True).data
         return Response(fees_data, status=status.HTTP_200_OK)
+
+class FeeTypeView(APIView):
+    def __init__(self, fee_service: FeeService = None):
+        self.fee_service = fee_service or FeeService()
+
+    def get(self, request: HttpRequest) -> Response:
+        '''
+        Retrieve all fee of a specific type and year
+        if year is not provided in the request, the current year is used.
+        '''
+        fee_type = request.query_params.get('fee_type')
+        year = request.query_params.get('year')
+        fees = self.fee_service.get_fee_by_type_and_year(fee_type, year)
+        return Response(fees, status=status.HTTP_200_OK)

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import FeeView, TermFee, GradeFee
+from .views import FeeView, TermFee, GradeFee, FeeTypeView
 
 
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
 
     path('term/<str:term_id>/', TermFee.as_view(), name='view-term-fees'),
     path('grade/<str:grade_id>/', GradeFee.as_view(), name='view-grade-fees'),
+    path('type/', FeeTypeView.as_view(), name='view-fee-types')
 ]

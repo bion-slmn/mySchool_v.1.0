@@ -16,9 +16,10 @@ DATABASES = {
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
+
 CORS_ALLOWED_ORIGINS = [
     "https://myschool-v-1-0.onrender.com",
     "https://my-school-v-1-0.vercel.app",
-    "http://localhost:3000", '*'
+    "http://localhost:3000", "http://localhost",
 ]
 

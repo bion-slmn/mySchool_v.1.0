@@ -69,7 +69,6 @@ class ValidateFeeData:
         '''
         Validate the fee data and return the serializer object.
         '''
-        print(fee_data, 22222222222)
         serializer = FeeSerializer(data=fee_data, partial=True)
         serializer.is_valid(raise_exception=True)
         return serializer
@@ -213,3 +212,27 @@ class FeeService:
         '''
         fee_obj = self.get_fee_object(fee_id)
         fee_obj.delete()
+
+    def verify_fee_type(self, fee_type):
+        '''
+        Verify that a fee type is valid.
+        '''
+        if not fee_type:
+            raise ValidationError("Fee type must be provided.")
+
+        if fee_type not in [fee_type[0] for fee_type in FeeType.choices]:
+            raise ValidationError("Invalid fee type.")
+
+
+
+    def get_fee_by_type_and_year(self, fee_type, year=None):
+        '''
+        Retrieve all fees of a specific type and year.
+        If year is not provided, the current year is used.
+        '''
+        year = year or timezone.now().year
+        self.verify_fee_type(fee_type)
+        if fee_type == FeeType.ADMISSION:
+            fees = Fee.objects.filter(fee_type=fee_type)
+        fees = Fee.objects.filter(fee_type=fee_type, created_at__year=year)
+        return self.serialize_fees(fees)
