@@ -36,14 +36,20 @@ const CreatePayments = ({ prevStep }) => {
         const grade = e.target.value;
         setSelectedGrade(grade);
 
+        if (prevStep) {
+            let feeUrl = `fee/type/?fee_type=ADMISSION`;
+        }
+
+
         if (grade) {
+            let feeUrl = `fee/grade/${grade}`;
             try {
                 setIsLoading(true);
                 await checkTokenAndRefresh();
 
                 const [studentData, feeData] = await Promise.all([
                     fetchData(`student/grade/${grade}`),
-                    fetchData(`fee/grade/${grade}`),
+                    fetchData(feeUrl),
                 ]);
 
                 setStudents(studentData);
