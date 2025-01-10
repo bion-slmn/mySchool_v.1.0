@@ -232,10 +232,8 @@ class FeeService:
         '''
         year = year or timezone.now().year
         self.verify_fee_type(fee_type)
-        
-        fees_filter = {'fee_type': fee_type}
-        if fee_type != FeeType.ADMISSION:
-            fees_filter['created__year'] = year
-
-        fees = Fee.objects.filter(**fees_filter)
+        if fee_type == FeeType.ADMISSION:
+            fees = Fee.objects.filter(fee_type=fee_type)
+        else:
+            fees = Fee.objects.filter(fee_type=fee_type, created__year=year)
         return self.serialize_fees(fees)
