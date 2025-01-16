@@ -4,7 +4,6 @@ import ViewTerms from "../components/school/viewTerm";
 import CreateTerm from "../components/school/createTerm";
 import { Button } from "react-bootstrap";
 import { ViewFeeInClassOrTerm } from "../components/fees/viewFees";
-import { ViewExpenseInTerm } from "../components/expense/viewEpense";
 import { useAuth } from "../service/authService";
 
 const School = () => {
@@ -19,7 +18,7 @@ const School = () => {
   return (
     <div>
       <ViewSchool />
-      <ViewExpenseInTerm />
+
       {activeSection === "viewTerms" && <ViewTerms />}
       <div className="d-flex justify-content-center mt-3">
         <Button

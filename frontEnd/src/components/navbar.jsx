@@ -33,7 +33,7 @@ function Navigationbar() {
           <Nav className="me-auto">
             <Nav.Link href="dashboard">Dashboard</Nav.Link>
             <Nav.Link href="school">School</Nav.Link>
-            <Nav.Link href="expense">expense</Nav.Link>
+            <Nav.Link href="expense">Expense</Nav.Link>
             <NavDropdown title="Add" id="basic-nav-dropdown">
               <NavDropdown.Item href="createTerm">Add Term</NavDropdown.Item>
               <NavDropdown.Item href="createStudent">
