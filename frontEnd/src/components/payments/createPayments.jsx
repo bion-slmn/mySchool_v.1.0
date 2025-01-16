@@ -38,8 +38,6 @@ const CreatePayments = ({ prevStep }) => {
 
         let feeUrl = prevStep ? `fee/type/?fee_type=ADMISSION` : `fee/grade/${grade}`;
 
-
-
         if (grade) {
 
             try {

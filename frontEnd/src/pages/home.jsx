@@ -17,6 +17,7 @@ const HomePage = () => {
         Manage all aspects of your school in one place: students, teachers, classes, fees, and reports.
       </p>
 
+
       <Row className="justify-content-center mt-4">
         <Col md={6}>
           <Card className="shadow-sm p-4">

@@ -26,6 +26,10 @@ import PrivateRoute from "./components/privateRoute";
 import { useEffect } from "react";
 import { MultiStepCreateStudent } from "./components/students/createStudent";
 import CreateGrade from "./components/grade/createGrade";
+import Footer from "./components/footer";
+import { ViewAnExpenseDetail } from "./components/expense/viewEpense";
+import { UpdateExpense } from "./components/expense/updateExpense";
+import Expense from "./pages/expense";
 
 function App() {
   useEffect(() => {
@@ -60,11 +64,15 @@ function App() {
               <Route path="viewPayments/PaymentDetails/updatePayment" element={<UpdatePayment />} />
               <Route path="viewStudent" element={<ViewStudent />} />
               <Route path="viewFee" element={<FeesAndPayments />} />
+              <Route path="viewExpenseDetail" element={<ViewAnExpenseDetail />} />
+              <Route path="viewExpenseDetail/updateExpense" element={<UpdateExpense />} />
+              <Route path="expense" element={<Expense />} />
             </Route>
           </Routes>
         </AuthProvider>
       </Router>
       <ToastContainer />
+      <Footer />
     </div>
   );
 }
