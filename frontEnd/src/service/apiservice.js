@@ -1,6 +1,13 @@
 import errorHandler from "./errorHandler";
 
-export const API_URL = "https://myschool-v-1-0.onrender.com/api/";
+
+
+
+const ENVIRONMENT = "dev";
+
+export const API_URL = ENVIRONMENT === "dev" 
+  ? "http://localhost:8000/api/" 
+  : "https://myschool-v-1-0.onrender.com/api/";
 
 // function to get data from backend
 export const fetchData = async (endPoint) => {

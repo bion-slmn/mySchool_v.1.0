@@ -19,6 +19,7 @@ const School = () => {
     <div>
       <ViewSchool />
 
+
       {activeSection === "viewTerms" && <ViewTerms />}
       <div className="d-flex justify-content-center mt-3">
         <Button

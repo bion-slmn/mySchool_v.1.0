@@ -5,13 +5,15 @@ import CreateGrade from "../components/grade/createGrade";
 import CreateSchool from "../components/school/createSchool";
 import CreatePayments from "../components/payments/createPayments";
 import PaymentCardinGrade from '../components/dashbaord';
+import ViewTotalStudents from "../components/school/viewTotalStudents";
+import ViewTotalPayments from "../components/payments/totalPayment";
 
 
 const DashboardButtons = () => {
   const [selectedAction, setSelectedAction] = useState(null); // Keeps track of which component to show
 
   const handleButtonClick = (action) => {
-    setSelectedAction(action); 
+    setSelectedAction(action);
   };
 
   const handleCloseOverlay = () => {
@@ -48,15 +50,15 @@ const DashboardButtons = () => {
       {selectedAction && (
         <div className="overlay-container">
           <Card className="p-4">
-            <Button 
-              variant="danger" 
-              className="close-button" 
-              onClick={handleCloseOverlay} 
+            <Button
+              variant="danger"
+              className="close-button"
+              onClick={handleCloseOverlay}
               style={{ position: 'absolute', top: '10px', right: '10px' }}
             >
               Close
             </Button>
-            
+
             {selectedAction === "createFee" && <CreateFee />}
             {selectedAction === "createGrade" && <CreateGrade />}
             {selectedAction === "createSchool" && <CreateSchool />}
@@ -69,10 +71,34 @@ const DashboardButtons = () => {
 };
 
 
+
+
+const DashboardCards = () => {
+  return (
+    <Container className="my-4">
+      <Row className="justify-content-md-center g-3">
+        <Col xs={12} sm={6} md={4} className="d-flex align-items-stretch">
+          <ViewTotalStudents />
+        </Col>
+        <Col xs={12} sm={6} md={4} className="d-flex align-items-stretch">
+          <ViewTotalPayments />
+        </Col>
+      </Row>
+    </Container>
+  );
+};
+
+
+
+
+
+
 const Dashboard = () => {
   return (
     <div>
       <DashboardButtons />
+      <hr />
+      <DashboardCards />
       <PaymentCardinGrade />
     </div>
   );

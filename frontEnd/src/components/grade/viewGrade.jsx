@@ -56,31 +56,37 @@ const ViewGrades = () => {
                     <Spinner animation="border" variant="primary" />
                 </div>
             ) : grades.length > 0 ? (
-                <Row>
-                    {grades.map((grade) => (
-                        <Col md={4} sm={6} xs={12} key={grade.id} className="mb-4">
-                            <Card onClick={() => handleClick(grade)}>
-                                <Card.Body>
-                                    <Card.Title>{grade.name}</Card.Title>
-                                    <Card.Text>{grade.description}</Card.Text>
-                                    <Button
-                                        variant="primary"
-                                        onClick={() => handleUpdate(grade)}
-                                        className="me-2"
-                                        size="sm"
-                                    >
-                                        Update
-                                    </Button>
-                                    <DeleteButton 
-                                    endpoint={`class/delete/${grade.id}`} 
-                                    onSuccess={() => handleDelete(grade.id)} 
-                                />
-                                </Card.Body>
-                                
-                            </Card>
-                        </Col>
-                    ))}
-                </Row>
+                <>
+                    <Row>
+                        {grades.map((grade) => (
+                            <Col md={4} sm={6} xs={12} key={grade.id} className="mb-4">
+                                <Card onClick={() => handleClick(grade)}>
+                                    <Card.Body>
+                                        <Card.Title>Name: {grade.name}</Card.Title>
+                                        <Card.Text><strong>Description: </strong>{grade.description || "None"}</Card.Text>
+                                        <Card.Text><strong>Students: </strong>{grade.total_students}</Card.Text>
+                                        <Card.Text><small>Updated: {grade.modified.toLocaleString()}</small></Card.Text>
+                                        <Button
+                                            variant="primary"
+                                            onClick={() => handleUpdate(grade)}
+                                            className="me-2"
+                                            size="sm"
+                                        >
+                                            Update
+                                        </Button>
+                                        <DeleteButton
+                                            endpoint={`class/delete/${grade.id}`}
+                                            onSuccess={() => handleDelete(grade.id)}
+                                        />
+                                    </Card.Body>
+
+                                </Card>
+                            </Col>
+
+                        ))}
+                    </Row>
+                    <small>Click on the card to view students in this grade.</small>
+                </>
             ) : (
                 <p>No grade data available.</p>
             )}
