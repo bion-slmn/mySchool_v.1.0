@@ -50,8 +50,9 @@ const ViewGrades = () => {
 
     return (
         <div className="container">
-            <h2>View Grades</h2>
             <small>Click on a grade to view students in that grade.</small>
+            <h2>View Grades</h2>
+
             {isLoading ? (
                 <div className="d-flex justify-content-center">
                     <Spinner animation="border" variant="primary" />
