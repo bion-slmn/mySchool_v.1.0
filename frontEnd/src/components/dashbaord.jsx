@@ -60,7 +60,7 @@ const PaymentCardinGrade = () => {
     };
 
     return (
-        <div className="container bg-primary text-white">
+        <div className="container bg-primary text-white" style={{ borderRadius: "10px" }}>
             <br />
             <Form>
                 <Form.Group>
