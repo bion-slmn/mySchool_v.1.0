@@ -49,6 +49,7 @@ const PaymentCardinGrade = () => {
     const handleGradeSelect = (event) => {
         const selectedGradeId = event.target.value;
         setSelectedGrade(selectedGradeId);
+        setPaymentData([]);
     };
 
     const handleClicked = (fee) => {
