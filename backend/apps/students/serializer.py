@@ -11,7 +11,8 @@ class StudentSerializer(BaseSerializer):
     '''
     updated_at = None 
     gender = serializers.CharField()
-    grade_name = serializers.CharField(source='grade.name', read_only=True)  # Fetch the grade's name directly
+    grade_name = serializers.CharField(source='grade.name', read_only=True)
+    
 
     class Meta:
         model = Student

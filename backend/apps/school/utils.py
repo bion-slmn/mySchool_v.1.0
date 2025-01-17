@@ -48,6 +48,16 @@ class SchoolService:
         serializer.save()
         return serializer.data
 
+    def get_total_students(self, user: User) -> int:
+        """
+        Retrieve the total number of students for the user's school.
+        """
+        if not self.check_user_has_school(user):
+            return {'total_students': 0, 'school': "No school"}
+        school = self.get_user_school(user)
+        students = school.students.count()
+        return {'total_students': students, 'school': school.name}
+
 
 
 class TermService:

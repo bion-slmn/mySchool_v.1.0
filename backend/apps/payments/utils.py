@@ -3,6 +3,8 @@ from django.db.models import Sum
 from .serializer import PaymentSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
+from django.utils import timezone
+from datetime import timedelta
 
 
 
@@ -85,6 +87,24 @@ class PaymentService:
                 payment_data['error'] = str(e)
                 failure_payments.append(payment_data)
         return {'success_payments': success_payments, 'failure_payments': failure_payments}
+
+    def _validate_day(self, days):
+        '''
+        Validate the number of days to get the total payments.
+        '''
+        if not days:
+            raise ValidationError('Days is required to get the total payments')
+        return int(days)
+
+
+    def get_total_payments(self, days):
+        '''
+        Return the total amount paid within a speciic period.
+        '''
+        days = self._validate_day(days)
+        start_date = timezone.now() - timedelta(days=days)
+        total = Payment.objects.filter(created__gte=start_date).aggregate(total=Sum('amount'))
+        return total['total'] or 0
     
 
     

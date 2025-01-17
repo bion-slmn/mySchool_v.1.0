@@ -96,3 +96,20 @@ class CreateDailyPaymentView(APIView):
         data = request.data.get('payments')
         payment_created = self.payment_service.bulk_create_payments(data)
         return Response(payment_created, status=status.HTTP_201_CREATED)
+
+
+class TotalPayment(APIView):
+    '''
+    Get total payment within a certain period default is 30 days
+    '''
+
+    def __init__(self, payment_service: PaymentService = None):
+        self.payment_service = payment_service or PaymentService()
+
+    def get(self, request: HttpRequest):
+        '''
+        Return the total amount paid by each student for a specific fee.
+        '''
+        days = request.query_params.get('days')
+        total_payment = self.payment_service.get_total_payments(days)
+        return Response(total_payment, status=status.HTTP_200_OK)
