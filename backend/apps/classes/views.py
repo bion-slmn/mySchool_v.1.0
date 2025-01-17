@@ -44,3 +44,16 @@ class GradeVIew(APIView):
         '''
         self.grade_service.delete_class(grade_id)
         return Response('Delete Sucessfully', status=status.HTTP_200_OK)
+
+class TotalNumberofGrades(APIView):
+    def __init__(self, gradeserivice=None):
+        self.grade_service = gradeserivice or GradeService()
+
+    def get(self, request:HttpRequest) -> Response:
+        '''
+        Get the total number of grades in a school
+        '''
+        user = request.user
+        total_grades = self.grade_service.get_total_number_of_grades(user)
+        return Response(total_grades, status=status.HTTP_200_OK)
+

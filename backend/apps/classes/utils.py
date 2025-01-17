@@ -58,3 +58,13 @@ class GradeService:
         Return the total number of students in a grade.
         '''
         return Grade.objects.get(id=grade_id).students.count()
+
+    def get_total_number_of_grades(self, user: User):
+        '''
+        Return the total number of grades in a school.
+        '''
+        if not self.school_service.check_user_has_school(user):
+            raise ValidationError('User has no school')
+        return user.school.grades.count()
+
+    

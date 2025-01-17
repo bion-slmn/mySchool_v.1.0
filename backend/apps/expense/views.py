@@ -55,3 +55,22 @@ class ExpenseView(APIView):
         updated_expense = self.expense_service.update_expense(expense_id, request.data)
         
         return Response(updated_expense, status=status.HTTP_200_OK)
+
+
+class TotalExpense(APIView):
+    def __init__(self, expense_service: ExpenseService = None):
+        self.expense_service = expense_service or ExpenseService()
+
+    def get(self, request: HttpRequest) -> Response:
+        """
+        Get the total expenses of a specific period., can be a number of days, or from a specific date to another.
+        """
+        days = request.query_params.get("days")
+        start_date = request.query_params.get("start_date")
+        end_date = request.query_params.get("end_date")
+        
+        total_expense = self.expense_service.get_total_expense(days, start_date, end_date)
+        return Response(total_expense, status=status.HTTP_200_OK)
+
+            
+        
