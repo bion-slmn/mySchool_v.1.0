@@ -60,12 +60,12 @@ const PaymentCardinGrade = () => {
     };
 
     return (
-        <div className="container">
+        <div className="container bg-primary text-white">
             <br />
             <Form>
                 <Form.Group>
                     <Form.Label>Select a Grade to view Payments</Form.Label>
-                    <Form.Control as="select" onChange={handleGradeSelect} value={selectedGrade || ""} className="text-primary">
+                    <Form.Control as="select" onChange={handleGradeSelect} value={selectedGrade || ""}>
                         <option value="">-- Select Grade --</option>
                         {gradeData.map((grade) => (
                             <option key={grade.id} value={grade.id}>
