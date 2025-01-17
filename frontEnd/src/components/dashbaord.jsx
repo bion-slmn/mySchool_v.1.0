@@ -4,6 +4,7 @@ import { toast } from "react-toastify"; // Assuming you are using toast for erro
 import { useAuth } from "../service/authService";
 import { fetchData } from "../service/apiservice";
 import { useNavigate } from "react-router-dom";
+import { PageLoading } from "./loadingIcon";
 
 const PaymentCardinGrade = () => {
     const [paymentData, setPaymentData] = useState([]);
@@ -76,7 +77,7 @@ const PaymentCardinGrade = () => {
                 </Form.Group>
             </Form>
 
-            {isLoading && <div>Loading...</div>}
+            {isLoading && <PageLoading />}
 
             {selectedGrade && (
                 <div>
