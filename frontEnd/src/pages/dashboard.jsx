@@ -7,6 +7,8 @@ import CreatePayments from "../components/payments/createPayments";
 import PaymentCardinGrade from '../components/dashbaord';
 import ViewTotalStudents from "../components/school/viewTotalStudents";
 import ViewTotalPayments from "../components/payments/totalPayment";
+import ViewTotalExpense from "../components/expense/totalExpense";
+import ViewTotalgrades from "../components/grade/totalGrade";
 
 
 const DashboardButtons = () => {
@@ -83,10 +85,18 @@ const DashboardCards = () => {
         <Col xs={12} sm={6} md={4} className="d-flex align-items-stretch">
           <ViewTotalPayments />
         </Col>
+        <Col xs={12} sm={6} md={4} className="d-flex align-items-stretch">
+          <ViewTotalgrades />
+        </Col>
+        <Col xs={12} sm={6} md={4} className="d-flex align-items-stretch">
+          <ViewTotalExpense />
+        </Col>
+
       </Row>
     </Container>
   );
 };
+
 
 
 
@@ -99,6 +109,8 @@ const Dashboard = () => {
       <DashboardButtons />
       <hr />
       <DashboardCards />
+
+
       <PaymentCardinGrade />
     </div>
   );
