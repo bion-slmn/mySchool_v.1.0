@@ -109,9 +109,9 @@ const Dashboard = () => {
       <DashboardButtons />
       <hr />
       <DashboardCards />
-
-
+      <hr />
       <PaymentCardinGrade />
+
     </div>
   );
 };

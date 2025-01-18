@@ -30,6 +30,7 @@ import Footer from "./components/footer";
 import { ViewAnExpenseDetail } from "./components/expense/viewEpense";
 import { UpdateExpense } from "./components/expense/updateExpense";
 import Expense from "./pages/expense";
+import ViewLatestPayments from "./components/payments/viewLatest";
 
 function App() {
   useEffect(() => {
@@ -67,6 +68,7 @@ function App() {
               <Route path="viewExpenseDetail" element={<ViewAnExpenseDetail />} />
               <Route path="viewExpenseDetail/updateExpense" element={<UpdateExpense />} />
               <Route path="expense" element={<Expense />} />
+              <Route path="latestPayments" element={<ViewLatestPayments />} />
             </Route>
           </Routes>
         </AuthProvider>

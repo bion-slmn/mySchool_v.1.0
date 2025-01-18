@@ -25,7 +25,7 @@ export const ViewPaymentonFee = () => {
 
     useEffect(() => {
         const fetchDataAsync = async () => {
-            
+
             console.log("Fee ID:", fee_id, total_amount, fee);
 
             try {
@@ -43,7 +43,7 @@ export const ViewPaymentonFee = () => {
         if (fee_id) {
             fetchDataAsync();
         }
-    }, [fee_id, checkTokenAndRefresh]);
+    }, [fee_id]);
 
     const handleBalance = (total_payments) => {
         return total_payments - total_amount;
@@ -63,7 +63,7 @@ export const ViewPaymentonFee = () => {
         navigate("/viewPayments", { state: { payment, fee_id } });
     }
 
-    
+
     if (!setIsLoading && payments.length === 0) {
         return (
             <div className="container">
@@ -74,7 +74,7 @@ export const ViewPaymentonFee = () => {
 
     return (
         <div className="container">
-            <h3>Payments</h3>
+            <h3>Payments on {fee.name}</h3>
             <Table striped bordered hover responsive>
                 <thead>
                     <tr>
@@ -123,11 +123,11 @@ const ViewPaymentonStudent = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { payment, fee_id } = location.state;
-    const { student_id, student } = payment; 
+    const { student_id, student } = payment;
     const studentId = student_id || student;
- 
+
     useEffect(() => {
-        
+
         const endpoint = `payment/student/?student_id=${studentId}&fee_id=${fee_id}`;
         console.log("Endpoint:", endpoint, payment);
         const fetchDataAsync = async () => {
@@ -211,8 +211,8 @@ const ViewPaymentDetails = () => {
 
     const handleDelete = async () => {
         toast.success("Payment deleted successfully.");
-        navigate("/viewPayments", { state: { payment: paymentData, fee_id : paymentData.fee } });
-        
+        navigate("/viewPayments", { state: { payment: paymentData, fee_id: paymentData.fee } });
+
 
     };
 

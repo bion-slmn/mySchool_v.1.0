@@ -32,7 +32,7 @@ const ViewTotalPayments = () => {
 
     const handleClick = () => {
         console.log("Card clicked!");
-        //navigate("/payments/details", { state: { days } });
+        navigate("/latestPayments");
     };
 
     return (

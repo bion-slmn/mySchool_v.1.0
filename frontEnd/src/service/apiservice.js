@@ -3,9 +3,9 @@ import errorHandler from "./errorHandler";
 
 
 
-const ENVIRONMENT = "prod"; // dev or prod
+const ENVIRONMENT = "dev"; // dev or prod
 
-export const API_URL = ENVIRONMENT === "dev" 
+export const API_URL = ENVIRONMENT === "prod" 
   ? "http://localhost:8000/api/" 
   : "https://myschool-v-1-0.onrender.com/api/";
 
