@@ -113,3 +113,20 @@ class TotalPayment(APIView):
         days = request.query_params.get('days')
         total_payment = self.payment_service.get_total_payments(days)
         return Response(total_payment, status=status.HTTP_200_OK)
+
+class PeriodPaymentView(APIView):
+    
+    def __init__(self, payment_service: PaymentService = None):
+        self.payment_service = payment_service or PaymentService()
+
+    def get(self, request: HttpRequest):
+        '''
+        get payment of a specifce fee type and period
+        '''
+        fee_type, start_date, end_date = self.payment_service.get_query_params(request, "fee_type", "start_date", "end_date")
+        payments = self.payment_service.get_period_payments(fee_type, start_date, end_date)
+        return Response(payments, status=status.HTTP_200_OK)
+
+
+
+    

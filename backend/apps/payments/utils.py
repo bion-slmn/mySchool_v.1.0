@@ -5,6 +5,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
 from django.utils import timezone
 from datetime import timedelta
+from django.db.models import Q
+
 
 
 
@@ -105,6 +107,39 @@ class PaymentService:
         start_date = timezone.now() - timedelta(days=days)
         total = Payment.objects.filter(created__gte=start_date).aggregate(total=Sum('amount'))
         return total['total'] or 0
+
+    def get_query_params(self, request, *params):
+        '''
+        Extracts required query parameters from the request.
+        Raises a ValidationError if any of the specified parameters are missing.
+        '''
+        result = []
+        for param in params:
+            value = request.query_params.get(param)
+            if value is None:
+                raise ValidationError({param: f'{param} is required'})
+            result.append(value)
+
+        return result
+
+    def get_period_payments(self, fee_type, start_date, end_date):
+        '''
+        get payments of a fee type for a specific period
+        '''
+        payments = Payment.objects.filter(
+            fee__fee_type=fee_type,
+            created__range=(start_date, end_date)
+        ).select_related('student', 'fee')
+        
+        return self._serialize_many(payments)
+
+    def _serialize_many(self, payments):
+        serializer = PaymentSerializer(payments, many=True)
+        return serializer.data
+
+    
+            
+
     
 
     
