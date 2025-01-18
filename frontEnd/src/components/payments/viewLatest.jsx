@@ -32,9 +32,10 @@ const ViewLatestPayments = () => {
     }, [startDate, endDate, feeType]);
 
     return (
-        <Card className="p-4">
+        <Card className="p-4 ">
             <h3>Latest Payments</h3>
-            <div className="mb-3 d-flex align-items-center">
+            <div className="mb-3 d-flex flex-column flex-md-row align-items-center">
+
                 <Form.Group className="me-3">
                     <Form.Label>Start Date</Form.Label>
                     <Form.Control
