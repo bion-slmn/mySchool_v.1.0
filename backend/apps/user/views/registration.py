@@ -4,15 +4,19 @@ from rest_framework import status
 from ..service import Userservice
 from django.http import HttpRequest
 from ..utils import (get_school_from_token, get_user_by_school, 
-                    add_role_to_user, validate_and_save_data)
+                    add_role_to_user, validate_and_save_data,
+                    validate_school_dependency, add_user_to_school)
 from ..serializer import UserSerializer
 from rest_framework.permissions import AllowAny
-
+from ..models import User
+from ..permission import IsAdmin, IsTeacher, IsTeacherOrAdmin
+from django.db import transaction
 
 
 
 
 class UserListView(APIView):
+    permission_classes = [IsAdmin]
     # get all users/teachers in the school of the admin
     def __init__(self, userservice=None):
         self.userservice = userservice or Userservice()
@@ -23,12 +27,13 @@ class UserListView(APIView):
         '''
         school = get_school_from_token(request)
         user = get_user_by_school(request, school)
-        user_data = self.userservice.get_serialized_user(user)
-        return Response(user_data, status=status.HTTP_200_OK)
+        users = self.userservice.get_serialized_user(user)
+        return Response(users, status=status.HTTP_200_OK)
        
 
 class UserView(APIView):
-    # get a user/teacher in the school of the admin by id
+    permission_classes = [IsTeacherOrAdmin]
+
     def __init__(self, userservice=None):
         self.userservice = userservice or Userservice()
 
@@ -36,15 +41,17 @@ class UserView(APIView):
         '''
         Get a user/teacher in the school of the admin by id
         '''
-        user_id = self.validate_user_id(request)
         school = get_school_from_token(request)
-        user = self.userservice.get_user(user_id, request, school)
-        serializer = UserSerializer(user)
-        return Response(serializer.data, status=status.HTTP_200_OK)   
+    
+        user = get_user_by_school(request, school)
+        user_data = self.userservice.get_serialized_user(user)
+        return Response(user_data, status=status.HTTP_200_OK) 
 
 
-class CreateAdminView(APIView):
+class CreateUser(APIView):
+    role = None
     permission_classes = [AllowAny]
+    
     def __init__(self, userservice=None):
         self.userservice = userservice or Userservice()
 
@@ -55,17 +62,36 @@ class CreateAdminView(APIView):
         user = request.user
         user_data = self.userservice.add_school_to_user_info(user)
         return Response(user_data, 200)
-
-
+    
+    @transaction.atomic
     def post(self, request: HttpRequest) -> Response:
-        ''' Create an admin user '''
-        data = add_role_to_user(request, 'admin')
-        data = validate_and_save_data(UserSerializer, data)
-        return Response(data, status=status.HTTP_201_CREATED)
+        ''' Create a user, parent, teacher or admin'''
+        data = add_role_to_user(request, self.role)
+        validate_school_dependency(request.user, self.role)
+
+        user_instance, user_data = validate_and_save_data(UserSerializer, data)
+        school = get_school_from_token(request)
+        add_user_to_school(user_instance, school, self.role)
+        
+        return Response(user_data, status=status.HTTP_201_CREATED)
+
+
+class CreateAdminView(CreateUser):
+    permission_classes = [IsAdmin]
+    role = User.SchoolRoles.ADMIN
+
+class CreateParentView(CreateUser):
+    permission_classes = [IsTeacherOrAdmin]
+    role = User.SchoolRoles.PARENT
+
+class CreateTeacherView(CreateUser):
+    permission_classes = [IsAdmin]
+    role = User.SchoolRoles.TEACHER
+
 
 
 class TestApi(APIView):
      permission_classes = [AllowAny]
 
      def get(self, request: HttpRequest) -> Response:
-        return Response('Application server is live.................')
+        return Response('Application server is live.................')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      

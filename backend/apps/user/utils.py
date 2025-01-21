@@ -37,7 +37,7 @@ def get_user_by_school( request: HttpRequest, school: School = None) -> User:
     user = User.objects.get(school=school) if school else request.user
     return user
 
-def add_role_to_user(request: HttpRequest, role: str) -> User:
+def add_role_to_user(request: HttpRequest, role: str, school=None) -> User:
     """
     Add a role to the user.
 
@@ -51,6 +51,8 @@ def add_role_to_user(request: HttpRequest, role: str) -> User:
     valid_roles = [choice[0] for choice in User.SchoolRoles.choices]
     if role not in valid_roles:
         raise ValidationError(f"Invalid role: {role}")
+    if role == User.SchoolRoles.ADMIN and school and school.owner:
+        raise ValidationError("This school already has an admin.")
     request_copy = request.data.copy()
     request_copy["role"] = role
 
@@ -64,7 +66,7 @@ def validate_and_save_data(serializer_class, data):
         serializer = serializer_class(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return serializer.data
+        return serializer.instance, serializer.data
 
 
 def get_user_from_email(email: str) -> User:
@@ -77,5 +79,40 @@ def get_user_from_email(email: str) -> User:
         return user
     else:
         raise ValidationError("User with this email does not exist.")
+        
+def validate_school_dependency(self, role, school=None):
+    """
+    Validate the school dependency for the user.
+    """
+    roles_requiring_school = (User.SchoolRoles.TEACHER, User.SchoolRoles.PARENT)
+    if role in roles_requiring_school and not school:
+        raise ValidationError(f"User must have a school to add a {role}.")
 
+    return True
 
+def add_admin_to_school(user, school):
+    """
+    Add an admin to a school.
+    """
+    if not school:
+        raise ValidationError("School is required to assign an admin.")
+    if school.owner:
+        raise ValidationError("This school already has an admin.")
+    school.owner = user
+    school.save()
+
+def add_user_to_school(user, school=None, role=None):
+    """
+    Add a user to a school based on the role.
+    """
+    if role == User.SchoolRoles.ADMIN:
+        pass
+    if school is None:
+        raise ValidationError("School is required to assign a role.")
+    elif role == User.SchoolRoles.TEACHER:
+        school.teachers.add(user)
+    elif role == User.SchoolRoles.PARENT:
+        school.parents.add(user)
+
+    school.save()
+    return user

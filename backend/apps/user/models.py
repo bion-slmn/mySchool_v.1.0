@@ -10,6 +10,7 @@ class User(AbstractUser):
     class SchoolRoles(models.TextChoices):
         ADMIN ='admin', 'school admin'
         TEACHER = 'teacher', 'school teacher'
+        PARENT = 'parent', 'school parent'
 
     id = models.UUIDField(default=uuid.uuid4,
                           editable=False, primary_key=True)
