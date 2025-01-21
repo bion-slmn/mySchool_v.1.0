@@ -38,7 +38,6 @@ def get_user_by_school( request: HttpRequest, school: School = None) -> User:
     roles = {
         "admin": User.objects.filter(id=school.owner_id),
         "teachers": school.teachers,
-        "parents": school.parents,
     }
 
     data = {
