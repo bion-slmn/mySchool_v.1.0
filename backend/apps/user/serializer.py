@@ -11,8 +11,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         
         token['role'] = user.role
-        if hasattr(user, 'schools'):
-            token['school'] = user.schools.name
+        if hasattr(user, 'school'):
+            token['school'] = user.school.name
 
         return token
 

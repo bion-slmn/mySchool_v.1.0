@@ -5,7 +5,7 @@ from ..service import Userservice
 from django.http import HttpRequest
 from ..utils import (get_school_from_token, get_user_by_school, 
                     add_role_to_user, validate_and_save_data,
-                    validate_school_dependency, add_user_to_school)
+                    validate_school_dependency, add_user_to_school, get_user_school)
 from ..serializer import UserSerializer
 from rest_framework.permissions import AllowAny
 from ..models import User
@@ -25,10 +25,9 @@ class UserListView(APIView):
         '''
         Get all users/teachers in the school of the admin
         '''
-        school = get_school_from_token(request)
-        user = get_user_by_school(request, school)
-        users = self.userservice.get_serialized_user(user)
-        return Response(users, status=status.HTTP_200_OK)
+        school = get_user_school(request)
+        user_data = get_user_by_school(request, school)
+        return Response(user_data, status=status.HTTP_200_OK)
        
 
 class UserView(APIView):
@@ -67,10 +66,12 @@ class CreateUser(APIView):
     def post(self, request: HttpRequest) -> Response:
         ''' Create a user, parent, teacher or admin'''
         data = add_role_to_user(request, self.role)
-        validate_school_dependency(request.user, self.role)
+        school = get_user_school(request)
+        validate_school_dependency(self.role, school)
 
         user_instance, user_data = validate_and_save_data(UserSerializer, data)
-        school = get_school_from_token(request)
+        
+        print(school, 33333333333333333333)
         add_user_to_school(user_instance, school, self.role)
         
         return Response(user_data, status=status.HTTP_201_CREATED)

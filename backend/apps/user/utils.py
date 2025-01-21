@@ -6,6 +6,7 @@ from django.http import HttpRequest
 from .models import User
 from  ..school.models import School
 from django.core.exceptions import ValidationError
+from .serializer import UserSerializer
 
 
 def get_school_from_token(request: HttpRequest) -> str:
@@ -34,8 +35,18 @@ def get_user_by_school( request: HttpRequest, school: School = None) -> User:
     Returns:
         User: The user object.
     """
-    user = User.objects.get(school=school) if school else request.user
-    return user
+    roles = {
+        "admin": User.objects.filter(id=school.owner_id),
+        "teachers": school.teachers,
+        "parents": school.parents,
+    }
+
+    data = {
+        role: list(queryset.values("id", "email", "first_name", "last_name"))
+        for role, queryset in roles.items()
+    }
+
+    return data
 
 def add_role_to_user(request: HttpRequest, role: str, school=None) -> User:
     """
@@ -90,6 +101,8 @@ def validate_school_dependency(self, role, school=None):
 
     return True
 
+    
+
 def add_admin_to_school(user, school):
     """
     Add an admin to a school.
@@ -116,3 +129,12 @@ def add_user_to_school(user, school=None, role=None):
 
     school.save()
     return user
+
+def get_user_school(request: HttpRequest) -> School:
+    """
+    Get the school of the user.
+    """
+    user = request.user
+    if user.school:
+        return user.school
+    return None
