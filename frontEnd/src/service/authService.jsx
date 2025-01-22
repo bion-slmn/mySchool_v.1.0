@@ -59,7 +59,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const loginAction = async (data) => {
-    const response = await fetch(`${API_URL}user/login/`, {
+    const response = await fetch(`${API_URL}user/login/admin/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

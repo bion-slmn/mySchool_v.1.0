@@ -3,7 +3,7 @@ import errorHandler from "./errorHandler";
 
 
 
-const ENVIRONMENT = "prod"; // dev or prod
+const ENVIRONMENT = "dev"; // dev or prod
 
 export const API_URL = ENVIRONMENT === "dev" 
   ? "http://localhost:8000/api/" 
