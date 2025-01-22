@@ -1,28 +1,13 @@
-FROM python:3.9.2-alpine
-
-RUN apk add --update --no-cache \
-    gcc \
-    libc-dev \
-    libffi-dev \
-    openssl-dev \
-    bash \
-    git \
-    libtool \
-    m4 \
-    g++ \
-    autoconf \
-    automake \
-    build-base \
-    postgresql-dev
+FROM python:3.11-slim
 
 # Set the working directoryok
 WORKDIR /src/app
 
 # Install Poetry and dependencies
 RUN pip install --upgrade pip
-RUN pip install poetry
+RUN pip install poetry==1.8.5
 COPY pyproject.toml poetry.lock ./
-RUN poetry install
+RUN poetry install 
 
 # Copy application files
 COPY . /src/app/

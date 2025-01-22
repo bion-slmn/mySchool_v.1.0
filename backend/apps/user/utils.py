@@ -7,6 +7,7 @@ from .models import User
 from  ..school.models import School
 from django.core.exceptions import ValidationError
 from .serializer import UserSerializer
+from django.contrib.auth.models import Group
 
 
 def get_school_from_token(request: HttpRequest) -> str:
@@ -61,8 +62,8 @@ def add_role_to_user(request: HttpRequest, role: str, school=None) -> User:
     valid_roles = [choice[0] for choice in User.SchoolRoles.choices]
     if role not in valid_roles:
         raise ValidationError(f"Invalid role: {role}")
-    if role == User.SchoolRoles.ADMIN and school and school.owner:
-        raise ValidationError("This school already has an admin.")
+
+
     request_copy = request.data.copy()
     request_copy["role"] = role
 
@@ -113,16 +114,27 @@ def add_admin_to_school(user, school):
     school.owner = user
     school.save()
 
+def add_user_to_group(user, role):
+    """
+    Add a user to a group based on the role.
+    """
+    group = Group.objects.get(name=role)
+    group.user_set.add(user)
+    group.save()
+    
+
 def add_user_to_school(user, school=None, role=None):
     """
     Add a user to a school based on the role.
     """
     if role == User.SchoolRoles.ADMIN:
-        pass
+
+        return None
     if school is None:
         raise ValidationError("School is required to assign a role.")
     elif role == User.SchoolRoles.TEACHER:
         school.teachers.add(user)
+
     elif role == User.SchoolRoles.PARENT:
         school.parents.add(user)
 
@@ -134,6 +146,6 @@ def get_user_school(request: HttpRequest) -> School:
     Get the school of the user.
     """
     user = request.user
-    if user.school:
-        return user.school
-    return None
+    if not user.is_authenticated:
+        return None
+    return getattr(user, 'school', None)
