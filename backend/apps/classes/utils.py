@@ -64,7 +64,7 @@ class GradeService:
         Return the total number of grades in a school.
         '''
         if not self.school_service.check_user_has_school(user):
-            raise ValidationError('User has no school')
+            return 0
         return user.school.grades.count()
 
     

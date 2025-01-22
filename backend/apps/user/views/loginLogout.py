@@ -6,6 +6,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from ..serializer import MyTokenObtainPairSerializer
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
+from rest_framework.exceptions import NotAuthenticated, PermissionDenied
+
 
 
 class Logout(APIView):
@@ -30,12 +32,12 @@ class LoginUserAPIView(APIView):
         # Authenticate the user
         user = authenticate(email=email, password=password)
         if user is None:
-            return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+            raise NotAuthenticated("Invalid credentials")
 
         
         # Check if the user's role matches the provided role
         if role and user.role != self.role:
-            return Response({"error": f"Unauthorized: Only {self.role} can log in here."}, status=status.HTTP_403_FORBIDDEN)
+            raise Permissiondenied(f"Unauthorized: Only {self.role} can log in here.")
         
         # Generate JWT tokens
         serializer = MyTokenObtainPairSerializer()
