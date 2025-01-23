@@ -3,9 +3,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.http import HttpRequest
 from .utils import ExpenseService
+from config.permissions import AdminOnly
 
 
 class ViewExpenseInTerm(APIView):
+    permission_classes = [AdminOnly]
+
     def __init__(self, expense_service: ExpenseService = None):
         self.expense_service = expense_service or ExpenseService()
 
@@ -20,6 +23,8 @@ class ViewExpenseInTerm(APIView):
 
 
 class ExpenseView(APIView):
+    permission_classes = [AdminOnly]
+    
     def __init__(self, expense_service: ExpenseService = None):
         self.expense_service = expense_service or ExpenseService()
 
@@ -58,6 +63,8 @@ class ExpenseView(APIView):
 
 
 class TotalExpense(APIView):
+    permission_classes = [AdminOnly]
+
     def __init__(self, expense_service: ExpenseService = None):
         self.expense_service = expense_service or ExpenseService()
 

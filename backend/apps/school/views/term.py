@@ -5,9 +5,12 @@ from rest_framework.response import Response
 from ..utils import TermService
 from rest_framework import status
 from django.http import HttpRequest
+from config.permissions import AdminOnlyForSensitiveActions
+from rest_framework.permissions import IsAuthenticated
 
 
 class TermView(APIView):
+    permission_classes = [AdminOnlyForSensitiveActions, IsAuthenticated]
 
     def __init__(self, termservice=TermService):
         self.term_service = termservice()

@@ -6,10 +6,13 @@ from .models import Student
 from django.http import HttpRequest
 from .utils import StudentService
 from .serializer import StudentSerializer
+from config.permissions import AdminOnlyForSensitiveActions, AdminOnly, TeacherorAdminOnly
+from rest_framework.permissions import IsAuthenticated
 
 
 
 class StudentView(APIView):
+    permission_classes = [AdminOnlyForSensitiveActions, IsAuthenticated]
     def __init__(self, student_service=None):
         self.student_service = student_service or StudentService()
 
@@ -49,6 +52,8 @@ class StudentView(APIView):
 
 
 class AllStudentView(APIView):
+    permission_classes = [TeacherorAdminOnly, IsAuthenticated]
+    
     def __init__(self, student_service=None):
         self.student_service = student_service or StudentService()
 
@@ -62,6 +67,8 @@ class AllStudentView(APIView):
     
 
 class StudentInGradeView(APIView):
+    permission_classes = [TeacherorAdminOnly, IsAuthenticated]
+
     def __init__(self, student_service=None):
         self.student_service = student_service or StudentService()
 

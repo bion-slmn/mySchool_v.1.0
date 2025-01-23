@@ -4,11 +4,11 @@ from django.http import HttpRequest
 from rest_framework.response import Response
 from ..utils import SchoolService
 from rest_framework import status
-from ..permissions import IsSchoolAdmin
+from config.permissions import AdminOnlyForSensitiveActions
 from rest_framework.permissions import IsAuthenticated
 
 class SchoolView(APIView):
-    permission_classes = [IsSchoolAdmin, IsAuthenticated]
+    permission_classes = [AdminOnlyForSensitiveActions, IsAuthenticated]
 
     def __init__(self, schoolservice=None):
         self.schoolservice = schoolservice or SchoolService()
@@ -39,6 +39,7 @@ class SchoolView(APIView):
 
 
 class TotalNumberofStudents(APIView):
+    permission_classes = [AdminOnlyForSensitiveActions, IsAuthenticated]
 
     def __init__(self, schoolservice=None):
         self.schoolservice = schoolservice or SchoolService()

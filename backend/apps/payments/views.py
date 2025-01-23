@@ -6,12 +6,15 @@ from .models import Payment
 from .utils import PaymentService
 from apps.fees.util import FeeService
 from apps.classes.utils import GradeService
+from config.permissions import AdminOnlyForSensitiveActions, TeacherorAdminOnly, AdminOnly
+from rest_framework.permissions import IsAuthenticated
 
 
 
 
 # create a class to view paymentes of a fee
 class PaymentonFeeView(APIView):
+    permission_classes = [AdminOnly]
 
     def __init__(self, payment_service: PaymentService = None):
         self.payment_service = payment_service or PaymentService()
@@ -68,6 +71,7 @@ class PaymentonFeeStudentView(APIView):
         return Response(payment, status=status.HTTP_200_OK)
 
 class PaymentsinGradeView(APIView):
+    permission_classes = [AdminOnly]
 
     def __init__(self, grade_service: GradeService = None,fess_service: FeeService = None):
         self.grade_service = grade_service or GradeService()
@@ -102,6 +106,7 @@ class TotalPayment(APIView):
     '''
     Get total payment within a certain period default is 30 days
     '''
+    permission_classes = [AdminOnly]
 
     def __init__(self, payment_service: PaymentService = None):
         self.payment_service = payment_service or PaymentService()
@@ -115,7 +120,8 @@ class TotalPayment(APIView):
         return Response(total_payment, status=status.HTTP_200_OK)
 
 class PeriodPaymentView(APIView):
-    
+    permission_classes = [AdminOnly]
+
     def __init__(self, payment_service: PaymentService = None):
         self.payment_service = payment_service or PaymentService()
 

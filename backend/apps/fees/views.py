@@ -6,9 +6,12 @@ from .serializer import FeeSerializer
 from .models import Fee
 from .util import FeeService
 from django.http import HttpRequest
+from rest_framework.permissions import IsAuthenticated
+from config.permissions import AdminOnlyForSensitiveActions, TeacherorAdminOnly
 
 
 class FeeView(APIView):
+    permission_classes = [AdminOnlyForSensitiveActions, IsAuthenticated]
 
     def __init__(self, fee_service: FeeService = None):
         self.fee_service = fee_service or FeeService()
@@ -59,6 +62,7 @@ class TermFee(APIView):
     
 
 class GradeFee(APIView):
+
 
     def __init__(self, fee_service: FeeService = None):
         self.fee_service = fee_service or FeeService()

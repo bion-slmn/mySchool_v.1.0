@@ -4,9 +4,13 @@ from django.http import HttpRequest
 from rest_framework import status
 from .serializer import GradeSerializer
 from .utils import GradeService
+from config.permissions import AdminOnlyForSensitiveActions, TeacherorAdminOnly
+from rest_framework.permissions import IsAuthenticated
 
 
 class GradeVIew(APIView):
+    permission_classes = [AdminOnlyForSensitiveActions, IsAuthenticated]
+
     def __init__(self, gradeserivice=None):
         self.grade_service = gradeserivice or GradeService()
 
@@ -46,6 +50,8 @@ class GradeVIew(APIView):
         return Response('Delete Sucessfully', status=status.HTTP_200_OK)
 
 class TotalNumberofGrades(APIView):
+    permission_classes = [TeacherorAdminOnly, IsAuthenticated]
+
     def __init__(self, gradeserivice=None):
         self.grade_service = gradeserivice or GradeService()
 
