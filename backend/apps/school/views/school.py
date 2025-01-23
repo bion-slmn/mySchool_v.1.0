@@ -4,9 +4,11 @@ from django.http import HttpRequest
 from rest_framework.response import Response
 from ..utils import SchoolService
 from rest_framework import status
-
+from ..permissions import IsSchoolAdmin
+from rest_framework.permissions import IsAuthenticated
 
 class SchoolView(APIView):
+    permission_classes = [IsSchoolAdmin, IsAuthenticated]
 
     def __init__(self, schoolservice=None):
         self.schoolservice = schoolservice or SchoolService()

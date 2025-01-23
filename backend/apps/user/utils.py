@@ -76,7 +76,6 @@ def validate_and_save_data(serializer_class, data):
         '''
         serializer = serializer_class(data=data)
         serializer.is_valid(raise_exception=True)
-        serializer.instance.is_active = True
         serializer.save()
         return serializer.instance, serializer.data
 

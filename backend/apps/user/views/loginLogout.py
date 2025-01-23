@@ -34,10 +34,9 @@ class LoginUserAPIView(APIView):
         if user is None:
             raise NotAuthenticated("Invalid credentials")
 
-        
         # Check if the user's role matches the provided role
-        if role and user.role != self.role:
-            raise Permissiondenied(f"Unauthorized: Only {self.role} can log in here.")
+        if user.role != self.role:
+            raise PermissionDenied(f"Unauthorized: Only {self.role} can log in here.")
         
         # Generate JWT tokens
         serializer = MyTokenObtainPairSerializer()

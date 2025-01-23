@@ -12,7 +12,9 @@ class SchoolService:
         '''
         Check out if the user has a school 
         '''
-        return hasattr(user, 'school')
+        if user.role == User.SchoolRoles.ADMIN:
+            return hasattr(user, 'school')
+        return True
     
     def create_school(self, school_data: dict, user: User) -> dict:
         """
@@ -32,7 +34,25 @@ class SchoolService:
         """
         if not self.check_user_has_school(user):
             raise ValidationError("User has no school.")
-        return user.school
+        return self._retrieve_school_by_user_role(user)
+
+
+    def _retrieve_school_by_user_role(self, user: User) -> School:
+        """
+        Retrieve a school by role.
+        """
+        role = user.role
+        role_school_map = {
+            User.SchoolRoles.ADMIN: lambda user: user.school,
+            User.SchoolRoles.TEACHER: lambda user: School.objects.get(teachers=user),
+            User.SchoolRoles.PARENT: lambda user: School.objects.get(parents=user),
+        }
+        
+        if role in role_school_map:
+            return role_school_map[role](user)
+        else:
+            raise ValidationError("Invalid user role.")
+    
     
 
     def update_school(self, user: User, school_data: dict) -> dict:
@@ -48,7 +68,7 @@ class SchoolService:
         serializer.save()
         return serializer.data
 
-    def get_total_students(self, user: User) -> int:
+    def get_total_students(self, user: User) -> dict:
         """
         Retrieve the total number of students for the user's school.
         """
@@ -94,7 +114,7 @@ class TermService:
         serializer.save(school=school)
         return serializer.data
     
-    def get_term_object(self, term_id) -> Term:
+    def get_term_object(self, term_id: int) -> Term:
         '''
         Retrieve a Term object by ID, raising a 404 error if not found.
         '''

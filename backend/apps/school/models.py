@@ -16,8 +16,8 @@ class School(BaseModel):
     name =  models.CharField(max_length=100, unique=True)
     address = models.TextField()
     owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='school', null=True)
-    parents = models.ManyToManyField(User, related_name='parents', blank=True)
-    teachers = models.ManyToManyField(User, related_name='teachers', blank=True)
+    parents = models.ManyToManyField(User, related_name='parent_schools', blank=True)
+    teachers = models.ManyToManyField(User, related_name='teacher_school', blank=True)
 
 
 class Term(BaseModel):

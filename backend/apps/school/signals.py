@@ -42,7 +42,7 @@ def create_permissions(sender, **kwargs):
 
             permission, created = Permission.objects.get_or_create(
                 codename=permission_name,
-                name=f"Can {permission_name.replace('_', ' ')}",
+                name=f"{permission_name.replace('_', ' ')}",
                 content_type=content_type,
             )
             if created:

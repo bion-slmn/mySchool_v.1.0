@@ -9,7 +9,7 @@ class SchoolSerializer(BaseSerializer):
     '''
     class Meta:
         model = School
-        fields = '__all__'
+        exclude = ['owner', 'parents', 'teachers', 'created']
 
 
 class TermSerializer(BaseSerializer):
